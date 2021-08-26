@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  api-postgres:
+    image: postgres:13.1-alpine
+    environment:
+      POSTGRES_USER: seln
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: db
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: always
