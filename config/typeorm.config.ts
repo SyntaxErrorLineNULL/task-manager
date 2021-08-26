@@ -7,6 +7,6 @@ export const typeORMConfig: TypeOrmModule = {
   username: 'app',
   password: 'secret',
   database: 'app',
-  entities: ['dist/**/*.entity{.ts}'],
+  entities: [__dirname + 'application/entity/*.entity{.ts}'],
   synchronize: true,
 };
