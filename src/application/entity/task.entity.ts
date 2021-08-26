@@ -6,7 +6,7 @@ export class Task extends BaseEntity {
   @PrimaryColumn({ type: 'uuid' })
   id: string;
 
-  @Column({ type: 'character', length: 45 })
+  @Column({ type: 'text' })
   title: string;
 
   @Column({ type: 'text' })
@@ -16,18 +16,8 @@ export class Task extends BaseEntity {
   createAt: Date;
 
   @Column({ type: 'timestamp', nullable: true })
-  finishAt?: Date;
+  finishAt?: Date = null;
 
-  @Column({ type: 'character' })
+  @Column()
   status: TaskStatusEnum;
-
-  constructor(id: string, title: string, description: string) {
-    super();
-    this.id = id;
-    this.title = title;
-    this.description = description;
-    this.createAt = new Date();
-    this.finishAt = null;
-    this.status = TaskStatusEnum.STATUS_START;
-  }
 }
