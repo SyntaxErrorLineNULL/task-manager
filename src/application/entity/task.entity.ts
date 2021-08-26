@@ -2,14 +2,14 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import { TaskStatusEnum } from './task.status.enum';
 
 @Entity()
-export class TaskEntity extends BaseEntity {
+export class Task extends BaseEntity {
   @PrimaryColumn({ type: 'uuid' })
   id: string;
 
-  @Column({ type: 'string' })
+  @Column({ type: 'character', length: 45 })
   title: string;
 
-  @Column({ type: 'string' })
+  @Column({ type: 'text' })
   description: string;
 
   @Column({ type: 'timestamp' })
@@ -18,14 +18,14 @@ export class TaskEntity extends BaseEntity {
   @Column({ type: 'timestamp', nullable: true })
   finishAt: Date;
 
-  @Column({ type: 'string' })
+  @Column({ type: 'character' })
   status: TaskStatusEnum;
 
-  constructor(title: string, description: string, createAt: Date) {
+  constructor(title: string, description: string) {
     super();
     this.title = title;
     this.description = description;
-    this.createAt = createAt;
+    this.createAt = new Date();
     this.finishAt = null;
     this.status = TaskStatusEnum.STATUS_START;
   }
