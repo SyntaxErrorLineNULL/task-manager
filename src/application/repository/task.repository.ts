@@ -7,7 +7,6 @@ import { TaskStatusEnum } from '../entity/task.status.enum';
 
 @EntityRepository(Task)
 export class TaskRepository extends Repository<Task> {
-  private description: any;
   /**
    * @param entity Task
    */

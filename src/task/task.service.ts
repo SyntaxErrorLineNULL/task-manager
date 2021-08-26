@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TaskRepository } from '../application/repository/task.repository';
 import { Task } from '../application/entity/task.entity';
+import { CreateTaskRequest } from './request/create.task.request';
 
 @Injectable()
 export class TaskService {
@@ -16,9 +17,7 @@ export class TaskService {
     return this.message;
   }
 
-  createTask(entity: Task): Promise<void> {
-    return this.taskRepository
-      .createTask(entity)
-      .then((r): void => console.log(r));
+  async createTask(entity: CreateTaskRequest): Promise<Task> {
+    return this.taskRepository.createTask(entity);
   }
 }
