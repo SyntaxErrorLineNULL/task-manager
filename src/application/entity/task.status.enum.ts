@@ -1,4 +1,4 @@
 export enum TaskStatusEnum {
-  STATUS_DONE,
-  STATUS_START,
+  STATUS_DONE = 'TASK_DONE',
+  STATUS_START = 'TASK_START',
 }
