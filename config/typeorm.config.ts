@@ -9,4 +9,5 @@ export const typeORMConfig: TypeOrmModule = {
   database: 'app',
   entities: [__dirname + 'application/entity/*.entity{.ts}'],
   synchronize: true,
+  autoLoadEntities: true,
 };
