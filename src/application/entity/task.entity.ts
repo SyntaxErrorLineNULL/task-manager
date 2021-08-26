@@ -16,13 +16,14 @@ export class Task extends BaseEntity {
   createAt: Date;
 
   @Column({ type: 'timestamp', nullable: true })
-  finishAt: Date;
+  finishAt?: Date;
 
   @Column({ type: 'character' })
   status: TaskStatusEnum;
 
-  constructor(title: string, description: string) {
+  constructor(id: string, title: string, description: string) {
     super();
+    this.id = id;
     this.title = title;
     this.description = description;
     this.createAt = new Date();
