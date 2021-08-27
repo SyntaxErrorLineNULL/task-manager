@@ -11,12 +11,6 @@ export class TaskService {
     private taskRepository: TaskRepository,
   ) {}
 
-  private message = 'Hello, world';
-
-  printMessage(): string {
-    return this.message;
-  }
-
   async createTask(entity: CreateTaskRequest): Promise<Task> {
     return this.taskRepository.createTask(entity);
   }
