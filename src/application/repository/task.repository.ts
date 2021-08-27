@@ -1,9 +1,9 @@
-import { EntityRepository, RemoveOptions, Repository } from 'typeorm';
+import { EntityRepository, Repository } from 'typeorm';
 import { Task } from '../entity/task.entity';
-import { NotFoundException } from './not.found.exception';
 import { CreateTaskRequest } from '../../task/request/create.task.request';
 import { v4 as uuidv4 } from 'uuid';
 import { TaskStatusEnum } from '../entity/task.status.enum';
+import { NotFoundException } from '@nestjs/common';
 
 @EntityRepository(Task)
 export class TaskRepository extends Repository<Task> {
@@ -29,11 +29,14 @@ export class TaskRepository extends Repository<Task> {
   }
 
   /**
-   * @param entities
-   * @param options
+   * @param id
    */
-  async removeTask(entities: Task[], options?: RemoveOptions): Promise<void> {
-    await this.remove(entities, options);
+  async removeTask(id: string): Promise<void> {
+    const task = await this.delete({ id });
+
+    if (task.affected === 0) {
+      throw new NotFoundException(`Task with ID "${id}" not found`);
+    }
   }
 
   /**
@@ -42,7 +45,7 @@ export class TaskRepository extends Repository<Task> {
   async getTaskById(id: string): Promise<Task> {
     const task = await this.findOne({ where: { id } });
     if (task === null) {
-      throw new NotFoundException();
+      throw new NotFoundException(`Task with ID "${id}" not found`);
     }
     return task;
   }
