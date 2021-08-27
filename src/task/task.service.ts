@@ -20,4 +20,8 @@ export class TaskService {
   async createTask(entity: CreateTaskRequest): Promise<Task> {
     return this.taskRepository.createTask(entity);
   }
+
+  async getAll(): Promise<Task[]> {
+    return this.taskRepository.getAllTask();
+  }
 }
