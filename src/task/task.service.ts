@@ -11,6 +11,9 @@ export class TaskService {
     private taskRepository: TaskRepository,
   ) {}
 
+  /**
+   * @param entity
+   */
   async createTask(entity: CreateTaskRequest): Promise<Task> {
     return this.taskRepository.createTask(entity);
   }
@@ -19,7 +22,17 @@ export class TaskService {
     return this.taskRepository.getAllTask();
   }
 
+  /**
+   * @param id
+   */
   async getById(id: string): Promise<Task> {
     return this.taskRepository.getTaskById(id);
+  }
+
+  /**
+   * @param id
+   */
+  async remove(id: string): Promise<void> {
+    await this.taskRepository.removeTask(id);
   }
 }
