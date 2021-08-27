@@ -1,3 +1,7 @@
+/**
+ * Author: SyntaxErrorLineNULL.
+ */
+
 import { Module } from '@nestjs/common';
 import { TaskModule } from './task/task.module';
 import { ConfigModule } from '@nestjs/config';

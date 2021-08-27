@@ -1,3 +1,7 @@
+/**
+ * Author: SyntaxErrorLineNULL.
+ */
+
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import { TaskStatusEnum } from './task.status.enum';
 
