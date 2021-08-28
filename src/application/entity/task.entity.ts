@@ -2,8 +2,18 @@
  * Author: SyntaxErrorLineNULL.
  */
 
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+  BaseEntity,
+  BeforeUpdate,
+  Column,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  PrimaryColumn,
+} from 'typeorm';
 import { TaskStatusEnum } from './task.status.enum';
+import { TaskCategory } from "./task.category";
+import { User } from './user.entity';
 
 @Entity()
 export class Task extends BaseEntity {
@@ -16,12 +26,33 @@ export class Task extends BaseEntity {
   @Column({ type: 'text' })
   description: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createAt: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
-  finishAt?: Date = null;
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    nullable: true,
+  })
+  finishAt?: Date;
 
-  @Column()
+  @BeforeUpdate()
+  updateTimestamp(): void {
+    this.finishAt = new Date();
+  }
+
+  @Column({
+    type: 'enum',
+    enum: TaskStatusEnum,
+    default: TaskStatusEnum.STATUS_START,
+  })
   status: TaskStatusEnum;
+
+  @BeforeUpdate()
+  changeStatus(): void {
+    this.status = TaskStatusEnum.STATUS_DONE;
+  }
+
+  @ManyToOne(() => User, (user) => user.tasks, { eager: false })
+  user: User;
 }
