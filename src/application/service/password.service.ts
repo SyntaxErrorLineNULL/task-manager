@@ -3,7 +3,9 @@
  */
 
 import { bcrypt } from 'bcrypt';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class PasswordService {
   rounds = `k>CwKU4W=G|I__1$9CT,.re,\'b<H)I`;
 
