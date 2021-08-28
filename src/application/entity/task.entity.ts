@@ -53,6 +53,6 @@ export class Task extends BaseEntity {
     this.status = TaskStatusEnum.STATUS_DONE;
   }
 
-  @ManyToOne(() => User, (user) => user.tasks, { eager: false })
-  user: User;
+  /*@ManyToOne(() => User, (user) => user.tasks, { eager: false })
+  user: User;*/
 }
