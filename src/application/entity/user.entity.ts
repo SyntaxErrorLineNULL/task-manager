@@ -11,13 +11,13 @@ export class User {
   @PrimaryColumn({ type: 'uuid' })
   id: string;
 
-  @Column({ type: 'character' })
+  @Column({ type: 'varchar' })
   name: string;
 
-  @Column('character')
+  @Column({ type: 'varchar', unique: true })
   email: string;
 
-  @Column('character')
+  @Column({ type: 'varchar' })
   passwordHash: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

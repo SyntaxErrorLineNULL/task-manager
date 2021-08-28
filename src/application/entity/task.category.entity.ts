@@ -9,6 +9,6 @@ export class TaskCategory {
   @PrimaryColumn({ type: 'uuid' })
   id: string;
 
-  @Column('string')
+  @Column('varchar')
   name: string;
 }

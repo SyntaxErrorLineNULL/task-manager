@@ -12,7 +12,6 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 import { TaskStatusEnum } from './task.status.enum';
-import { TaskCategory } from "./task.category";
 import { User } from './user.entity';
 
 @Entity()
