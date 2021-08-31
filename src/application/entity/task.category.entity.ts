@@ -2,10 +2,10 @@
  * Author: SyntaxErrorLineNULL.
  */
 
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
-export class TaskCategory {
+export class TaskCategory extends BaseEntity {
   @PrimaryColumn({ type: 'uuid' })
   id: string;
 
