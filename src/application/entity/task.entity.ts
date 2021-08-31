@@ -32,14 +32,14 @@ export class Task extends BaseEntity {
   description: string;
 
   @CreateDateColumn({
-    type: 'timestamp',
+    type: 'timestamp without time zone',
     default: () => 'CURRENT_TIMESTAMP',
     name: 'createAt',
   })
   createAt: Date;
 
   @Column({
-    type: 'timestamp',
+    type: 'timestamp without time zone',
     default: () => 'null',
     nullable: true,
   })
