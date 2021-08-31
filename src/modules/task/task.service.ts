@@ -4,8 +4,8 @@
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TaskRepository } from '../application/repository/task.repository';
-import { Task } from '../application/entity/task.entity';
+import { TaskRepository } from '../../application/repository/task.repository';
+import { Task } from '../../application/entity/task.entity';
 import { CreateTaskRequest } from './request/create.task.request';
 
 @Injectable()
