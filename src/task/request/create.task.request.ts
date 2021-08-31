@@ -3,6 +3,6 @@
  */
 
 export interface CreateTaskRequest {
-  title: string;
-  description: string;
+  readonly title: string;
+  readonly description: string;
 }
