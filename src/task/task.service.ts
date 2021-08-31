@@ -19,7 +19,8 @@ export class TaskService {
    * @param entity
    */
   async createTask(entity: CreateTaskRequest): Promise<Task> {
-    return this.taskRepository.createTask(entity);
+    const user = this.taskRepository.create(entity);
+    return this.taskRepository.save(user);
   }
 
   async getAll(): Promise<Task[]> {
