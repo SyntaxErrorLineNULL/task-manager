@@ -2,7 +2,7 @@
  * Author: SyntaxErrorLineNULL.
  */
 
-export interface CreateTaskRequest {
+export class CreateTaskRequest {
   readonly title: string;
   readonly description: string;
 }
