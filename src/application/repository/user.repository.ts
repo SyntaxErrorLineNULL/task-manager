@@ -7,7 +7,7 @@ import { NotFoundException } from '@nestjs/common';
  */
 
 @EntityRepository(User)
-export class UserRepository extends Repository<User>{
+export class UserRepository extends Repository<User> {
   /**
    * @param id
    */
