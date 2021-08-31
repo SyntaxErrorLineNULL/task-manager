@@ -2,13 +2,13 @@
  * Author: SyntaxErrorLineNULL.
  */
 
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Task } from './task.entity';
 import { UserStatusEnum } from './user.status.enum';
 
 @Entity()
 export class User {
-  @PrimaryColumn({ type: 'uuid' })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'varchar' })
@@ -20,7 +20,11 @@ export class User {
   @Column({ type: 'varchar' })
   passwordHash: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    name: 'createdAt',
+  })
   createAt: Date;
 
   @Column({ default: 0 })
