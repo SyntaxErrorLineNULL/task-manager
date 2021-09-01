@@ -2,12 +2,18 @@
  * Author: SyntaxErrorLineNULL.
  */
 
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Task } from './task.entity';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+
 import { UserStatusEnum } from './user.status.enum';
 
 @Entity()
-export class User {
+export default class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

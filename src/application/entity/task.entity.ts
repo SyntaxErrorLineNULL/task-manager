@@ -9,14 +9,16 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   PrimaryColumn,
 } from 'typeorm';
 import { TaskStatusEnum } from './task.status.enum';
-import { User } from './user.entity';
 import { v4 as uuidv4 } from 'uuid';
+import TaskCategory from './category.entity';
 
 @Entity()
-export class Task extends BaseEntity {
+export default class TaskEntity extends BaseEntity {
   @PrimaryColumn({ type: 'uuid' })
   id: string;
 
@@ -56,6 +58,10 @@ export class Task extends BaseEntity {
     default: TaskStatusEnum.STATUS_START,
   })
   status: TaskStatusEnum;
+
+  @ManyToMany(() => TaskCategory)
+  @JoinTable()
+  categoryIds?: TaskCategory[];
 
   /*@ManyToOne(() => User, (user) => user.tasks, { eager: false })
   user: User;*/
