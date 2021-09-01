@@ -11,9 +11,9 @@ import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CategoryTaskModule } from './modules/category-task/category-task.module';
 import { CategoryTaskController } from './modules/category-task/category-task.controller';
-import TaskEntity from "./application/entity/task.entity";
-import UserEntity from "./application/entity/user.entity";
-import CategoryEntity from "./application/entity/category.entity";
+import TaskEntity from './application/entity/task.entity';
+import UserEntity from './application/entity/user.entity';
+import CategoryEntity from './application/entity/category.entity';
 
 @Module({
   imports: [
