@@ -5,22 +5,33 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TaskRepository } from '../../application/repository/task.repository';
-import { CreateTaskRequest } from './request/create.task.request';
+import { CreateTaskDto } from '../common/dto/create.task.dto';
 import TaskEntity from '../../application/entity/task.entity';
+import CategoryRepository from '../../application/repository/category.repository';
 
 @Injectable()
 export class TaskService {
   constructor(
     @InjectRepository(TaskRepository)
     private taskRepository: TaskRepository,
+    @InjectRepository(CategoryRepository)
+    private categoryRepository: CategoryRepository,
   ) {}
 
   /**
    * @param entity
    */
-  async createTask(entity: CreateTaskRequest): Promise<TaskEntity> {
-    const user = this.taskRepository.create(entity);
-    return this.taskRepository.save(user);
+  async createTask(entity: CreateTaskDto): Promise<TaskEntity> {
+    const { title, description, categoryIds } = entity;
+    const task = new TaskEntity();
+    task.title = title;
+    task.description = description;
+    task.categoryIds = [];
+    for (let i = 0; i < categoryIds.length; i++) {
+      const category = await this.categoryRepository.findOne(categoryIds[i]);
+      task.categoryIds.push(category);
+    }
+    return await this.taskRepository.save(task);
   }
 
   async getAll(): Promise<TaskEntity[]> {
