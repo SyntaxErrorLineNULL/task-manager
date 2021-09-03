@@ -11,7 +11,7 @@ export class UserRepository extends Repository<UserEntity> {
   /**
    * @param id
    */
-  async getTaskById(id: string): Promise<UserEntity> {
+  public async getUserById(id: string): Promise<UserEntity> {
     const user = await this.findOne({ where: { id } });
     if (user === null) {
       throw new NotFoundException(`Task with ID "${id}" not found`);
@@ -19,7 +19,11 @@ export class UserRepository extends Repository<UserEntity> {
     return user;
   }
 
-  async getAllUser(): Promise<UserEntity[]> {
+  public async getAllUser(): Promise<UserEntity[]> {
     return await this.find({ order: { id: 'DESC', createAt: 'ASC' } });
+  }
+
+  public async findByEmail(email: string): Promise<UserEntity | null> {
+    return await this.findOne({ where: { email: email } });
   }
 }
