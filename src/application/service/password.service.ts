@@ -9,8 +9,8 @@ import { Injectable } from '@nestjs/common';
 export class PasswordService {
   rounds = `k>CwKU4W=G|I__1$9CT,.re,\'b<H)I`;
 
-  async hash(password: string) {
-    await bcrypt.hash(password, this.rounds, (error, result) => {
+  async hash(password: string): Promise<string> {
+    return await bcrypt.hash(password, this.rounds, (error, result) => {
       error ? new Error('Hash password is not success') : console.log(result);
     });
   }
