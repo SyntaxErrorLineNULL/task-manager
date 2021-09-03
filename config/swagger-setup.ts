@@ -5,7 +5,7 @@
 import type { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-export function setupSwagger(app: INestApplication): void {
+export function swaggerSetup(app: INestApplication): void {
   const config = new DocumentBuilder()
     .setTitle('Task Manager')
     .setDescription('Task manager api')
@@ -14,5 +14,5 @@ export function setupSwagger(app: INestApplication): void {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('documentation', app, document);
+  SwaggerModule.setup('docs', app, document);
 }
