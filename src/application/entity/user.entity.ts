@@ -4,18 +4,24 @@
 
 import {
   BaseEntity,
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
 } from 'typeorm';
-
 import { UserStatusEnum } from './user.status.enum';
+import { v4 as uuidv4 } from 'uuid';
 
 @Entity()
 export default class UserEntity extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn({ type: 'uuid' })
   id: string;
+
+  @BeforeInsert()
+  async generateId(): Promise<void> {
+    this.id = await uuidv4();
+  }
 
   @Column({ type: 'varchar' })
   name: string;
