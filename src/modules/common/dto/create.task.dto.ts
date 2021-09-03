@@ -2,8 +2,15 @@
  * Author: SyntaxErrorLineNULL.
  */
 
+import { ApiProperty } from '@nestjs/swagger';
+
 export class CreateTaskDto {
-  readonly title: string;
-  readonly description: string;
-  readonly categoryIds: string[];
+  @ApiProperty()
+  title: string;
+
+  @ApiProperty()
+  description: string;
+
+  @ApiProperty()
+  categoryIds: number[];
 }
