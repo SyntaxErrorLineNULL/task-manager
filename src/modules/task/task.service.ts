@@ -19,10 +19,10 @@ export class TaskService {
   ) {}
 
   /**
-   * @param entity
+   * @param schema
    */
-  async createTask(entity: CreateTaskDto): Promise<TaskEntity> {
-    const { title, description, categoryIds } = entity;
+  async createTask(schema: CreateTaskDto): Promise<TaskEntity> {
+    const { title, description, categoryIds } = schema;
     const task = new TaskEntity();
     task.title = title;
     task.description = description;
