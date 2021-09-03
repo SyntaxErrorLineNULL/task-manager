@@ -1,3 +1,7 @@
+/**
+ * Author: SyntaxErrorLineNULL.
+ */
+
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import CategoryRepository from '../../application/repository/category.repository';

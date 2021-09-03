@@ -1,3 +1,7 @@
+/**
+ * Author: SyntaxErrorLineNULL.
+ */
+
 import { Module } from '@nestjs/common';
 import { CategoryTaskService } from './category-task.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
