@@ -12,8 +12,9 @@ import {
 } from 'typeorm';
 import { UserStatusEnum } from './user.status.enum';
 import { v4 as uuidv4 } from 'uuid';
+import { Role } from './role';
 
-@Entity()
+@Entity('user')
 export default class UserEntity extends BaseEntity {
   @PrimaryColumn({ type: 'uuid' })
   id: string;
@@ -26,7 +27,7 @@ export default class UserEntity extends BaseEntity {
   @Column({ type: 'varchar' })
   name: string;
 
-  @Column({ type: 'varchar', unique: true })
+  @Column({ unique: true })
   email: string;
 
   @Column({ type: 'varchar' })
@@ -48,6 +49,9 @@ export default class UserEntity extends BaseEntity {
     default: UserStatusEnum.STATUS_ACTIVE,
   })
   status: UserStatusEnum;
+
+  @Column({ type: 'enum', enum: Role, default: Role.USER })
+  role: Role;
 
   /*@OneToMany(() => Task, (task) => task.user, { eager: true })
   tasks: Task[];*/
