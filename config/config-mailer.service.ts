@@ -15,7 +15,7 @@ export class ConfigMailerService implements MailerOptionsFactory {
     return {
       transport: {
         host: this.config.get<string>('MAILER_HOST'),
-        secure: this.config.get<boolean>('MAILER_ENCRYPTION'),
+        secure: this.config.get<boolean>('MAILER_SECURE'),
         port: this.config.get<number>('MAILER_PORT'),
         auth: {
           user: this.config.get<string>('MAILER_USERNAME'),
@@ -23,7 +23,7 @@ export class ConfigMailerService implements MailerOptionsFactory {
         },
       },
       defaults: {
-        from: 'cyberorange@gmail.com',
+        from: 'cyberorange16@gmail.com',
       },
       template: {
         dir: join(__dirname, 'template/mail'),
