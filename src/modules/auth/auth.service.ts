@@ -6,6 +6,8 @@ import { PasswordService } from '../../application/service/password.service';
 import { TokenDto } from '../common/dto/token.dto';
 import { jwtConfig } from '../../../config/jwt.config';
 import { JwtService } from '@nestjs/jwt';
+import UserEntity from '../../application/entity/user.entity';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
@@ -15,17 +17,21 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  public async signUp(schema: SignUpDto): Promise<void> {
-    const user = this.userService.findByEmail(schema.email);
-    user
-      ? new HttpException('this email is already in use', HttpStatus.FORBIDDEN)
-      : await this.userService.createUser(schema);
+  public async signUp(schema: SignUpDto): Promise<UserEntity> {
+    const user = await this.userService.findByEmail(schema.email);
+    if (user !== undefined) {
+      throw new HttpException(
+        'this email is already in use',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+    return await this.userService.createUser(schema);
   }
 
   public async signIn(schema: SignInDto): Promise<TokenDto> {
     const user = await this.userService.findByEmail(schema.email);
-
-    const isPasswordValid = await this.passwordService.validate(
+    console.log(schema.password);
+    const isPasswordValid = await bcrypt.compareSync(
       schema.password,
       user.passwordHash,
     );
