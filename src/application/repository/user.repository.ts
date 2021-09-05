@@ -23,7 +23,7 @@ export class UserRepository extends Repository<UserEntity> {
     return await this.find({ order: { id: 'DESC', createAt: 'ASC' } });
   }
 
-  public async findByEmail(email: string): Promise<UserEntity | null> {
-    return await this.findOne({ where: { email: email } });
+  public async findByEmail(email: string): Promise<UserEntity | undefined> {
+    return await this.findOne({ where: { email } });
   }
 }
