@@ -30,7 +30,6 @@ export class AuthService {
 
   public async signIn(schema: SignInDto): Promise<TokenDto> {
     const user = await this.userService.findByEmail(schema.email);
-    console.log(schema.password);
     const isPasswordValid = await bcrypt.compareSync(
       schema.password,
       user.passwordHash,
@@ -42,22 +41,25 @@ export class AuthService {
         HttpStatus.UNAUTHORIZED,
       );
     }
-    return await this.generateJWTToken(user.id, user.email);
+    return await this.generateJWTToken(user);
   }
 
   /**
-   * @param id
-   * @param email
    * @private
+   * @param user
    */
-  private async generateJWTToken(id: string, email: string): Promise<TokenDto> {
+  private async generateJWTToken(user: UserEntity): Promise<TokenDto> {
+    const payload = {
+      userId: user.id,
+      userEmail: user.email,
+    };
     return new TokenDto({
       expiresIn: jwtConfig.jwtExpirationTime,
-      accessToken: await this.jwtService.signAsync({
-        id: id,
-        email: email,
-        createAt: new Date(),
-      }),
+      accessToken: await this.jwtService.signAsync(payload),
     });
+  }
+
+  public async getUser(id: string): Promise<UserEntity> {
+    return this.userService.getById(id);
   }
 }
