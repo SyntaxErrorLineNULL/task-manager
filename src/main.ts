@@ -9,6 +9,7 @@ import { swaggerSetup } from '../config/swagger-setup';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   swaggerSetup(app);
-  await app.listen(process.env.APP_PORT || 3000);
+  await app.listen(process.env.APP_PORT || 5000);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
-bootstrap().then((r): void => console.log(r));
+bootstrap();
