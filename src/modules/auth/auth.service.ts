@@ -1,4 +1,13 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+/**
+ * Author: SyntaxErrorLineNULL.
+ */
+
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { SignUpDto } from '../common/dto/signUp.dto';
 import { SignInDto } from '../common/dto/signIn.dto';
@@ -8,6 +17,7 @@ import { jwtConfig } from '../../../config/jwt.config';
 import { JwtService } from '@nestjs/jwt';
 import UserEntity from '../../application/entity/user.entity';
 import * as bcrypt from 'bcryptjs';
+import { UserStatusEnum } from '../../application/entity/user.status.enum';
 
 @Injectable()
 export class AuthService {
@@ -59,7 +69,13 @@ export class AuthService {
     });
   }
 
-  public async getUser(id: string): Promise<UserEntity> {
-    return this.userService.getById(id);
+  public async validate(id: string): Promise<UserEntity> {
+    const user = await this.userService.getById(id);
+    console.log(user);
+    if (!user || user.status === UserStatusEnum.STATUS_BLOCKED) {
+      throw new UnauthorizedException();
+    }
+
+    return user;
   }
 }
