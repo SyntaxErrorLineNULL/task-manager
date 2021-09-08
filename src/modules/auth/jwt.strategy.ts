@@ -1,15 +1,15 @@
 /**
  * Author: SyntaxErrorLineNULL.
  */
+
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { jwtConfig } from '../../../config/jwt.config';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import UserEntity from '../../application/entity/user.entity';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(private readonly service: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -18,12 +18,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
+  protected async validate(payload: any) {
+    const timeDiff = payload.exp - payload.iat;
     console.log(payload);
-    return {
-      userId: payload.userId,
-      userEmail: payload.userEmail,
-      message: 'ok',
-    };
+    const user = await this.service.validate(payload.userId);
+
+    if (timeDiff <= 0) {
+      throw new UnauthorizedException();
+    }
+
+    console.log(payload);
+    return user;
   }
 }
