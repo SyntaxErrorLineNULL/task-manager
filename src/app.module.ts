@@ -15,7 +15,7 @@ import { LoggerModule } from './core/logger/logger.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.env',
+      envFilePath: '.env.dev',
       isGlobal: true,
     }),
     TaskModule,
