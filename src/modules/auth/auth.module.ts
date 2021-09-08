@@ -9,18 +9,26 @@ import { PasswordService } from '../../application/service/password.service';
 import { UserModule } from '../user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { ConfigJwtService } from '../../../config/config-jwt.service';
+import { JwtStrategy } from './jwt.strategy';
+import { jwtConfig } from '../../../config/jwt.config';
 
 @Module({
   imports: [
     forwardRef(() => UserModule),
-    PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.registerAsync({
-      useClass: ConfigJwtService,
+    PassportModule,
+    JwtModule.register({
+      secret: jwtConfig.secret,
+      signOptions: {
+        algorithm: 'HS512',
+        expiresIn: jwtConfig.jwtExpirationTime,
+      },
+      verifyOptions: {
+        algorithms: ['HS512'],
+      },
     }),
   ],
-  providers: [AuthService, PasswordService],
+  providers: [AuthService, PasswordService, JwtStrategy],
   controllers: [AuthController],
-  exports: [PassportModule.register({ defaultStrategy: 'jwt' }), AuthService],
+  exports: [AuthService],
 })
 export class AuthModule {}
