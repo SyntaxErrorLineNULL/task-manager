@@ -9,10 +9,12 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryColumn,
+  OneToMany,
 } from 'typeorm';
 import { UserStatusEnum } from './user.status.enum';
 import { v4 as uuidv4 } from 'uuid';
 import { Role } from './role';
+import TaskEntity from './task.entity';
 
 @Entity('user')
 export default class UserEntity extends BaseEntity {
@@ -53,6 +55,6 @@ export default class UserEntity extends BaseEntity {
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
 
-  /*@OneToMany(() => Task, (task) => task.user, { eager: true })
-  tasks: Task[];*/
+  @OneToMany(() => TaskEntity, (task) => task.user, { eager: true })
+  tasks: TaskEntity[];
 }
