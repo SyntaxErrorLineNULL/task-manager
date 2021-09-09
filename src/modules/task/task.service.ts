@@ -8,6 +8,7 @@ import { TaskRepository } from '../../application/repository/task.repository';
 import { CreateTaskDto } from '../common/dto/create.task.dto';
 import TaskEntity from '../../application/entity/task.entity';
 import CategoryRepository from '../../application/repository/category.repository';
+import UserEntity from '../../application/entity/user.entity';
 
 @Injectable()
 export class TaskService {
@@ -20,13 +21,18 @@ export class TaskService {
 
   /**
    * @param schema
+   * @param user
    */
-  async createTask(schema: CreateTaskDto): Promise<TaskEntity> {
+  async createTask(
+    schema: CreateTaskDto,
+    user: UserEntity,
+  ): Promise<TaskEntity> {
     const { title, description, categoryIds } = schema;
     const task = new TaskEntity();
     task.title = title;
     task.description = description;
     task.categoryIds = [];
+    task.user = user;
     for (let i = 0; i < categoryIds.length; i++) {
       const category = await this.categoryRepository.findOne(categoryIds[i]);
       task.categoryIds.push(category);
