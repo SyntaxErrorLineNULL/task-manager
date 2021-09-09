@@ -23,7 +23,10 @@ export class TaskRepository extends Repository<TaskEntity> {
    * @param id
    */
   async getTaskById(id: string): Promise<TaskEntity> {
-    const task = await this.findOne({ where: { id } });
+    const task = await this.findOne({
+      where: { id },
+      relations: ['user', 'categoryIds'],
+    });
     if (task === null) {
       throw new NotFoundException(`Task with ID "${id}" not found`);
     }
