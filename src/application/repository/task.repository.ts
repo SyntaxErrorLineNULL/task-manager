@@ -31,6 +31,9 @@ export class TaskRepository extends Repository<TaskEntity> {
   }
 
   async getAllTask(): Promise<TaskEntity[]> {
-    return await this.find({ order: { id: 'DESC', title: 'ASC' } });
+    return await this.find({
+      order: { id: 'DESC', title: 'ASC' },
+      relations: ['user', 'categoryIds'],
+    });
   }
 }
