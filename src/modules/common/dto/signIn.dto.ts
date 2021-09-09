@@ -2,7 +2,12 @@
  * Author: SyntaxErrorLineNULL.
  */
 
+import { ApiProperty } from '@nestjs/swagger';
+
 export class SignInDto {
-  email: string;
-  password: string;
+  @ApiProperty()
+  readonly email: string;
+
+  @ApiProperty()
+  readonly password: string;
 }

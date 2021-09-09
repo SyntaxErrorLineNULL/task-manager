@@ -2,8 +2,15 @@
  * Author: SyntaxErrorLineNULL.
  */
 
-export interface SignUpDto {
-  name: string;
-  email: string;
-  password: string;
+import { ApiProperty } from '@nestjs/swagger';
+
+export class SignUpDto {
+  @ApiProperty()
+  readonly name: string;
+
+  @ApiProperty()
+  readonly email: string;
+
+  @ApiProperty()
+  readonly password: string;
 }

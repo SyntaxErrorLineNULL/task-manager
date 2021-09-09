@@ -5,10 +5,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class TokenDto {
-  @ApiProperty()
+  @ApiProperty({ description: 'auth-token expires' })
   public expiresIn: number;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'auth-token' })
   public accessToken: string;
 
   /**
