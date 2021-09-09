@@ -12,10 +12,12 @@ import {
   JoinTable,
   ManyToMany,
   PrimaryColumn,
+  ManyToOne,
 } from 'typeorm';
 import { TaskStatusEnum } from './task.status.enum';
 import { v4 as uuidv4 } from 'uuid';
 import TaskCategory from './category.entity';
+import UserEntity from './user.entity';
 
 @Entity()
 export default class TaskEntity extends BaseEntity {
@@ -63,6 +65,9 @@ export default class TaskEntity extends BaseEntity {
   @JoinTable()
   categoryIds?: TaskCategory[];
 
-  /*@ManyToOne(() => User, (user) => user.tasks, { eager: false })
-  user: User;*/
+  @ManyToOne(() => UserEntity, (user) => user.tasks, {
+    eager: false,
+    nullable: true,
+  })
+  user?: UserEntity | null;
 }
