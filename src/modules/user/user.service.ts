@@ -24,7 +24,6 @@ export class UserService {
     user.name = name;
     user.email = email;
     user.passwordHash = await bcrypt.hashSync(password, 12);
-    console.log(user);
     return await this.userRepository.save(user);
   }
 
