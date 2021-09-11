@@ -38,12 +38,10 @@ export class AuthService {
       );
     }
 
-    await this.mailService.send(
-      schema.email,
-      'Welcome',
-      'welcom this app',
-      '<b>welcome</b>',
-    );
+    await this.mailService.send(schema.email, 'Welcome', './index', {
+      name: schema.name,
+      token: '123131',
+    });
     return await this.userService.createUser(schema);
   }
 
