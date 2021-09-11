@@ -4,7 +4,6 @@
 import { MailerOptionsFactory, MailerOptions } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
-import * as path from 'path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 
 @Injectable()
@@ -25,12 +24,13 @@ export class ConfigMailerService implements MailerOptionsFactory {
       defaults: {
         from: 'type16@gmail.com',
       },
-      /*template: {
+      template: {
+        dir: process.cwd() + '/template/mail',
         adapter: new HandlebarsAdapter(),
         options: {
           strict: true,
         },
-      },*/
+      },
     };
   }
 }
