@@ -18,11 +18,13 @@ import { JwtService } from '@nestjs/jwt';
 import UserEntity from '../../application/entity/user.entity';
 import * as bcrypt from 'bcryptjs';
 import { UserStatusEnum } from '../../application/entity/user.status.enum';
+import { MailService } from '../../core/mail/mail.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
+    private readonly mailService: MailService,
     private readonly passwordService: PasswordService,
     private readonly jwtService: JwtService,
   ) {}
@@ -35,6 +37,13 @@ export class AuthService {
         HttpStatus.FORBIDDEN,
       );
     }
+
+    await this.mailService.send(
+      schema.email,
+      'Welcome',
+      'welcom this app',
+      '<b>welcome</b>',
+    );
     return await this.userService.createUser(schema);
   }
 
