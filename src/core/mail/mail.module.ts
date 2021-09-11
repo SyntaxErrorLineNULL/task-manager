@@ -1,3 +1,7 @@
+/**
+ * Author: SyntaxErrorLineNULL.
+ */
+
 import { Module } from '@nestjs/common';
 import { MailService } from './mail.service';
 import { MailerModule } from '@nestjs-modules/mailer';
@@ -10,5 +14,6 @@ import { ConfigMailerService } from '../../../config/config-mailer.service';
     }),
   ],
   providers: [MailService],
+  exports: [MailService],
 })
 export class MailModule {}
