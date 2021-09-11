@@ -11,11 +11,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
 import { jwtConfig } from '../../../config/jwt.config';
+import { MailModule } from '../../core/mail/mail.module';
 
 @Module({
   imports: [
     forwardRef(() => UserModule),
     PassportModule,
+    MailModule,
     JwtModule.register({
       secret: jwtConfig.secret,
       signOptions: {
