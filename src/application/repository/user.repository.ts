@@ -14,7 +14,7 @@ export class UserRepository extends Repository<UserEntity> {
   public async getUserById(id: string): Promise<UserEntity> {
     const user = await this.findOne({ where: { id } });
     if (user === null) {
-      throw new NotFoundException(`Task with ID "${id}" not found`);
+      throw new NotFoundException(`User with ID "${id}" not found`);
     }
     return user;
   }
@@ -25,5 +25,15 @@ export class UserRepository extends Repository<UserEntity> {
 
   public async findByEmail(email: string): Promise<UserEntity | undefined> {
     return await this.findOne({ where: { email } });
+  }
+
+  public async getByToken(token: string): Promise<UserEntity> {
+    const user = await this.findOne({
+      where: { confirmationToken: { value: token } },
+    });
+    if (user === null) {
+      throw new NotFoundException(`Token is not found`);
+    }
+    return user;
   }
 }
