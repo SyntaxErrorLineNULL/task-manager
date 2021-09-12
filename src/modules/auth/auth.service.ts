@@ -19,6 +19,8 @@ import UserEntity from '../../application/entity/user.entity';
 import * as bcrypt from 'bcryptjs';
 import { UserStatusEnum } from '../../application/entity/user.status.enum';
 import { MailService } from '../../core/mail/mail.service';
+import { random } from 'lodash';
+import { ConfirmationAuthenticationDto } from '../common/dto/confirmation.authentication.dto';
 
 @Injectable()
 export class AuthService {
@@ -38,11 +40,14 @@ export class AuthService {
       );
     }
 
+    const token = Math.floor(random() + Math.random() * 9999).toString();
+
     await this.mailService.send(schema.email, 'Welcome', './index', {
       name: schema.name,
-      token: '123131',
+      token: token,
     });
-    return await this.userService.createUser(schema);
+    console.log(token);
+    return await this.userService.createUser(schema, token);
   }
 
   public async signIn(schema: SignInDto): Promise<TokenDto> {
@@ -59,6 +64,12 @@ export class AuthService {
       );
     }
     return await this.generateJWTToken(user);
+  }
+
+  public async confirmationAuthentication(
+    schema: ConfirmationAuthenticationDto,
+  ): Promise<void> {
+    await this.userService.confirmationToken(schema.token);
   }
 
   /**
@@ -79,7 +90,11 @@ export class AuthService {
   public async validate(id: string): Promise<UserEntity> {
     const user = await this.userService.getById(id);
     console.log(user);
-    if (!user || user.status === UserStatusEnum.STATUS_BLOCKED) {
+    if (
+      !user ||
+      user.status === UserStatusEnum.STATUS_BLOCKED ||
+      user.status === UserStatusEnum.STATUS_UNCONFIRMED
+    ) {
       throw new UnauthorizedException();
     }
 
