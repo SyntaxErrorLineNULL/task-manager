@@ -15,6 +15,7 @@ import { UserStatusEnum } from './user.status.enum';
 import { v4 as uuidv4 } from 'uuid';
 import { Role } from './role';
 import TaskEntity from './task.entity';
+import { TokenEntity } from './token.entity';
 
 @Entity('user')
 export default class UserEntity extends BaseEntity {
@@ -48,7 +49,7 @@ export default class UserEntity extends BaseEntity {
   @Column({
     type: 'enum',
     enum: UserStatusEnum,
-    default: UserStatusEnum.STATUS_ACTIVE,
+    default: UserStatusEnum.STATUS_UNCONFIRMED,
   })
   status: UserStatusEnum;
 
@@ -57,4 +58,7 @@ export default class UserEntity extends BaseEntity {
 
   @OneToMany(() => TaskEntity, (task) => task.user, { eager: true })
   tasks: TaskEntity[];
+
+  @Column(() => TokenEntity)
+  confirmationToken?: TokenEntity;
 }
