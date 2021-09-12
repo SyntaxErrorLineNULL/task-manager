@@ -10,6 +10,7 @@ import {
   UseGuards,
   Request,
   HttpStatus,
+  Res,
 } from '@nestjs/common';
 import { ApiBody, ApiTags, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
@@ -18,6 +19,8 @@ import { SignInDto } from '../common/dto/signIn.dto';
 import { TokenDto } from '../common/dto/token.dto';
 import UserEntity from '../../application/entity/user.entity';
 import { JwtAuthGuard } from './guard/jwt-auth.guard';
+import { ConfirmationAuthenticationDto } from '../common/dto/confirmation.authentication.dto';
+import { Response } from 'express';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -52,6 +55,20 @@ export class AuthController {
   })
   public async signIn(@Body() body: SignInDto): Promise<TokenDto> {
     return await this.service.signIn(body);
+  }
+
+  @Post('confirmation')
+  @ApiBody({ type: [ConfirmationAuthenticationDto] })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'your email is confirm',
+  })
+  public async confirmationAuth(
+    @Body() body: ConfirmationAuthenticationDto,
+    @Res() response: Response,
+  ): Promise<Response> {
+    await this.service.confirmationAuthentication(body);
+    return response.status(HttpStatus.CREATED).json('your email is confirm');
   }
 
   @UseGuards(JwtAuthGuard)
