@@ -11,7 +11,7 @@ export class TokenEntity {
 
   @CreateDateColumn({
     type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
+    default: () => 'DATE_ADD(CURRENT_TIMESTAMP), INTERVAL 2 HOUR)',
     nullable: true,
   })
   expires?: Date;
