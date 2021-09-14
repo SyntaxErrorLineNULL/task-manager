@@ -8,7 +8,6 @@ import {
   Body,
   Get,
   UseGuards,
-  Request,
   HttpStatus,
   Res,
 } from '@nestjs/common';
@@ -18,9 +17,10 @@ import { SignUpDto } from '../common/dto/signUp.dto';
 import { SignInDto } from '../common/dto/signIn.dto';
 import { TokenDto } from '../common/dto/token.dto';
 import UserEntity from '../../application/entity/user.entity';
-import { JwtAuthGuard } from './guard/jwt-auth.guard';
+import { JwtAuthGuard } from '../../core/guard/jwt-auth.guard';
 import { ConfirmationAuthenticationDto } from '../common/dto/confirmation.authentication.dto';
 import { Response } from 'express';
+import { Authentication } from '../../core/decorator/user.decorator';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -73,7 +73,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('test')
-  public test(@Request() req): any {
-    return req.user;
+  public test(@Authentication() auth): any {
+    return auth;
   }
 }

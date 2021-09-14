@@ -9,7 +9,7 @@ import { PasswordService } from '../../application/service/password.service';
 import { UserModule } from '../user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { JwtStrategy } from './jwt.strategy';
+import { JwtStrategy } from '../../core/guard/jwt.strategy';
 import { jwtConfig } from '../../../config/jwt.config';
 import { MailModule } from '../../core/mail/mail.module';
 

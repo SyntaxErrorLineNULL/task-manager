@@ -77,10 +77,7 @@ export class AuthService {
    * @param user
    */
   private async generateJWTToken(user: UserEntity): Promise<TokenDto> {
-    const payload = {
-      userId: user.id,
-      userEmail: user.email,
-    };
+    const payload = { userId: user.id };
     return new TokenDto({
       expiresIn: jwtConfig.jwtExpirationTime,
       accessToken: await this.jwtService.signAsync(payload),
@@ -90,11 +87,7 @@ export class AuthService {
   public async validate(id: string): Promise<UserEntity> {
     const user = await this.userService.getById(id);
     console.log(user);
-    if (
-      !user ||
-      user.status === UserStatusEnum.STATUS_BLOCKED ||
-      user.status === UserStatusEnum.STATUS_UNCONFIRMED
-    ) {
+    if (!user || !UserStatusEnum.STATUS_ACTIVE) {
       throw new UnauthorizedException();
     }
 
