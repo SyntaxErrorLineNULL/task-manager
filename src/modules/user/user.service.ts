@@ -46,9 +46,9 @@ export class UserService {
 
   public async confirmationToken(token: string): Promise<void> {
     const user = await this.userRepository.getByToken(token);
-    /*if (user.confirmationToken.expires <= new Date()) {
+    if (user.confirmationToken.expires > new Date()) {
       throw new HttpException('Token is expired', HttpStatus.FORBIDDEN);
-    }*/
+    }
 
     user.confirmationToken.value = null;
     user.confirmationToken.expires = null;
