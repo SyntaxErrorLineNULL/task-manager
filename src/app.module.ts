@@ -11,6 +11,7 @@ import { CategoryTaskModule } from './modules/category-task/category-task.module
 import { MailModule } from './core/mail/mail.module';
 import { DatabaseModule } from './core/database/database.module';
 import { LoggerModule } from './core/logger/logger.module';
+import { ArticleModule } from './modules/article/article.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { LoggerModule } from './core/logger/logger.module';
     MailModule,
     DatabaseModule,
     LoggerModule,
+    ArticleModule,
   ],
 })
 export class AppModule {}
