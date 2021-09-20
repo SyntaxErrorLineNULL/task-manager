@@ -6,7 +6,7 @@ import { Entity, Column, CreateDateColumn } from 'typeorm';
 
 @Entity('token')
 export class TokenEntity {
-  @Column({ type: 'varchar', nullable: true, default: null })
+  @Column({ type: 'varchar', nullable: true, default: null, unique: true })
   value?: string;
 
   @CreateDateColumn({
