@@ -16,8 +16,9 @@ import {
 import { TaskService } from './task.service';
 import { CreateTaskDto } from '../common/dto/create.task.dto';
 import TaskEntity from '../../application/entity/task.entity';
-import { ApiBody, ApiTags, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiTags, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../core/guard/jwt-auth.guard';
+import { Authentication } from '../../core/decorator/user.decorator';
 
 @Controller('task')
 @ApiTags('task')
@@ -29,7 +30,7 @@ export class TaskController {
   @ApiBody({ type: [CreateTaskDto] })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    description: 'Create user',
+    description: 'Create task',
     type: CreateTaskDto,
   })
   async createTask(
@@ -49,8 +50,29 @@ export class TaskController {
     return await this.taskService.getById(id);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Create task',
+    type: CreateTaskDto,
+  })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    schema: { oneOf: [{ type: 'string' }] },
+  })
   @Delete('remove/:id')
-  async remove(@Param('id') id: string): Promise<void> {
-    return await this.taskService.remove(id);
+  async remove(@Param('id') id: string, @Authentication() auth): Promise<void> {
+    return await this.taskService.remove(id, auth);
+  }
+
+  @Post('done/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Close task',
+  })
+  async doneTask(@Param('id') id: string): Promise<TaskEntity> {
+    return await this.taskService.done(id);
   }
 }
