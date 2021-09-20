@@ -40,7 +40,7 @@ export class AuthService {
       );
     }
 
-    const token = Math.floor(random() + Math.random() * 9999).toString();
+    const token = Math.floor(random() * 99999 + Math.random() * 9999).toString();
 
     await this.mailService.send(schema.email, 'Welcome', './index', {
       name: schema.name,
@@ -57,9 +57,9 @@ export class AuthService {
       user.passwordHash,
     );
 
-    if (!user || !isPasswordValid) {
+    if (!user || !isPasswordValid || user.status !== UserStatusEnum.STATUS_ACTIVE) {
       throw new HttpException(
-        'Password or email is not correct',
+        'Password or email is not correct. Or your account is not confirmation',
         HttpStatus.UNAUTHORIZED,
       );
     }
@@ -87,7 +87,7 @@ export class AuthService {
   public async validate(id: string): Promise<UserEntity> {
     const user = await this.userService.getById(id);
     console.log(user);
-    if (!user || !UserStatusEnum.STATUS_ACTIVE) {
+    if (!user || user.status !== UserStatusEnum.STATUS_ACTIVE) {
       throw new UnauthorizedException();
     }
 
