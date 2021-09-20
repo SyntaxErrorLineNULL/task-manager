@@ -12,6 +12,7 @@ import { MailModule } from './core/mail/mail.module';
 import { DatabaseModule } from './core/database/database.module';
 import { LoggerModule } from './core/logger/logger.module';
 import { ArticleModule } from './modules/article/article.module';
+import { ImageModule } from './modules/image/image.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ArticleModule } from './modules/article/article.module';
     DatabaseModule,
     LoggerModule,
     ArticleModule,
+    ImageModule,
   ],
 })
 export class AppModule {}
