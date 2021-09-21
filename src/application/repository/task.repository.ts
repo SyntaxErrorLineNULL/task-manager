@@ -11,7 +11,7 @@ export class TaskRepository extends Repository<TaskEntity> {
   /**
    * @param id
    */
-  async removeTask(id: string): Promise<void> {
+  public async removeTask(id: string): Promise<void> {
     const task = await this.delete({ id });
 
     if (task.affected === 0) {
@@ -22,7 +22,7 @@ export class TaskRepository extends Repository<TaskEntity> {
   /**
    * @param id
    */
-  async getTaskById(id: string): Promise<TaskEntity> {
+  public async getTaskById(id: string): Promise<TaskEntity> {
     const task = await this.findOne({
       where: { id },
       relations: ['user', 'categoryIds'],
@@ -33,7 +33,7 @@ export class TaskRepository extends Repository<TaskEntity> {
     return task;
   }
 
-  async getAllTask(): Promise<TaskEntity[]> {
+  public async getAllTask(): Promise<TaskEntity[]> {
     return await this.find({
       order: { id: 'DESC', title: 'ASC' },
       relations: ['user', 'categoryIds'],
