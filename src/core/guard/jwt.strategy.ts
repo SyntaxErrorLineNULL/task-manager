@@ -21,7 +21,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
   protected async validate(payload: PayloadJwt): Promise<any> {
     const timeDiff = payload.exp - payload.iat;
-    console.log(payload);
     const user = await this.service.validate(payload.userId);
 
     if (timeDiff <= 0) {
