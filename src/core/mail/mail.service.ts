@@ -12,14 +12,14 @@ export class MailService {
   public async send(
     email: string,
     message: string,
-    viev: string,
+    view: string,
     html: any,
   ): Promise<void> {
     await this.mailerService
       .sendMail({
         to: email,
         subject: message,
-        template: viev,
+        template: view,
         context: html,
       })
       .then((success) => {
