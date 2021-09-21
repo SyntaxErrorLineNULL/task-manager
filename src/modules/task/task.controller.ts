@@ -72,7 +72,7 @@ export class TaskController {
     status: HttpStatus.CREATED,
     description: 'Close task',
   })
-  async doneTask(@Param('id') id: string): Promise<TaskEntity> {
-    return await this.taskService.done(id);
+  async doneTask(@Param('id') id: string, @Authentication() auth): Promise<TaskEntity> {
+    return await this.taskService.done(id, auth);
   }
 }
