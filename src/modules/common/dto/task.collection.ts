@@ -12,7 +12,7 @@ export class TaskCollection {
   /**
    * @param items
    */
-  constructor(items: TaskDto[]) {
+  public constructor(items: TaskDto[]) {
     this.items = items;
   }
 }
