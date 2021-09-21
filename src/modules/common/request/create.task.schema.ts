@@ -4,7 +4,7 @@
 
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateTaskDto {
+export class CreateTaskSchema {
   @ApiProperty()
   title: string;
 

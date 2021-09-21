@@ -4,7 +4,7 @@
 
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ConfirmationAuthenticationDto {
+export class ConfirmationAuthenticationSchema {
   @ApiProperty()
   readonly token: string;
 }
