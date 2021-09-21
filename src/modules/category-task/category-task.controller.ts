@@ -4,20 +4,20 @@
 
 import { Body, Controller, Post, Get } from '@nestjs/common';
 import { CategoryTaskService } from './category-task.service';
-import CreateCategoryDto from '../common/dto/create.category.dto';
+import CreateCategorySchema from '../common/request/create.category.schema';
 import CategoryEntity from '../../application/entity/category.entity';
 
 @Controller('category-task')
 export class CategoryTaskController {
-  constructor(private service: CategoryTaskService) {}
+  public constructor(private service: CategoryTaskService) {}
 
   @Post('create')
-  createCategoryTask(@Body() body: CreateCategoryDto): Promise<CategoryEntity> {
-    return this.service.create(body);
+  public async createCategoryTask(@Body() body: CreateCategorySchema): Promise<CategoryEntity> {
+    return await this.service.create(body);
   }
 
   @Get('category-tasks')
-  getAllCategory(): Promise<CategoryEntity[]> {
-    return this.service.getAll();
+  public async getAllCategory(): Promise<CategoryEntity[]> {
+    return await this.service.getAll();
   }
 }

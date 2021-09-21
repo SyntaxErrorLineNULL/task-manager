@@ -6,21 +6,21 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import CategoryRepository from '../../application/repository/category.repository';
 import CategoryEntity from '../../application/entity/category.entity';
-import CreateCategoryDto from '../common/dto/create.category.dto';
+import CreateCategorySchema from '../common/request/create.category.schema';
 
 @Injectable()
 export class CategoryTaskService {
-  constructor(
+  public constructor(
     @InjectRepository(CategoryRepository)
     private categoryRepository: CategoryRepository,
   ) {}
 
-  async create(entity: CreateCategoryDto): Promise<CategoryEntity> {
+  public async create(entity: CreateCategorySchema): Promise<CategoryEntity> {
     const category = this.categoryRepository.create(entity);
     return await this.categoryRepository.save(category);
   }
 
-  async getAll(): Promise<CategoryEntity[]> {
+  public async getAll(): Promise<CategoryEntity[]> {
     return await this.categoryRepository.getAll();
   }
 }
