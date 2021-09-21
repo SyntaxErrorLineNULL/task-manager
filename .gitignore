@@ -28,4 +28,5 @@ lerna-debug.log*
 *.sublime-workspace
 
 # env
-.env.dev
+!.env.dev
+/.env.dev
