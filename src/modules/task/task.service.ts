@@ -28,17 +28,12 @@ export class TaskService {
     schema: CreateTaskDto,
     user: UserEntity,
   ): Promise<TaskEntity> {
-    const { title, description, categoryIds } = schema;
-    const task = new TaskEntity();
-
-    task.title = title;
-    task.description = description;
+    const task = new TaskEntity(schema.title, schema.description, user);
     task.categoryIds = [];
-    task.user = user;
 
-    for (let i = 0; i < categoryIds.length; i++) {
-      const category = await this.categoryRepository.findOne(categoryIds[i]);
-      task.categoryIds.push(category);
+    for (let i = 0; i < schema.categoryIds.length; i++) {
+      const cat = await this.categoryRepository.findOne(schema.categoryIds[i]);
+      task.categoryIds.push(cat);
     }
 
     return await this.taskRepository.save(task);
@@ -60,15 +55,18 @@ export class TaskService {
    * @param user
    */
   async remove(id: string, user: UserEntity): Promise<void> {
-    const task = this.getById(id);
-    if ((await task).user.id !== user.id) {
+    const task = await this.getById(id);
+    if (task.user.id !== user.id) {
       throw new NotFoundException('User is not owner this task');
     }
     await this.taskRepository.removeTask(id);
   }
 
-  async done(id: string): Promise<TaskEntity> {
-    const task = await this.taskRepository.getTaskById(id);
+  async done(id: string, user: UserEntity): Promise<TaskEntity> {
+    const task = await this.getById(id);
+    if ((await task).user.id !== user.id) {
+      throw new NotFoundException('User is not owner this task');
+    }
     task.status = TaskStatusEnum.STATUS_DONE;
     return task;
   }
