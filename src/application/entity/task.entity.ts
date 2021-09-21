@@ -4,8 +4,6 @@
 
 import {
   BaseEntity,
-  BeforeInsert,
-  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
@@ -24,35 +22,17 @@ export default class TaskEntity extends BaseEntity {
   @PrimaryColumn({ type: 'uuid' })
   id: string;
 
-  @BeforeInsert()
-  async generateId(): Promise<void> {
-    this.id = await uuidv4();
-  }
-
   @Column({ type: 'text' })
   title: string;
 
   @Column({ type: 'text' })
   description: string;
 
-  @CreateDateColumn({
-    type: 'timestamp without time zone',
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'createAt',
-  })
+  @CreateDateColumn({ type: 'timestamp', name: 'createAt' })
   createAt: Date;
 
-  @Column({
-    type: 'timestamp without time zone',
-    default: () => 'null',
-    nullable: true,
-  })
-  finishAt?: Date;
-
-  @BeforeUpdate()
-  updateTimestamp(): void {
-    this.finishAt = new Date();
-  }
+  @Column({ type: 'timestamp without time zone', nullable: true })
+  finishAt?: Date = null;
 
   @Column({
     type: 'enum',
@@ -70,4 +50,18 @@ export default class TaskEntity extends BaseEntity {
     nullable: true,
   })
   user?: UserEntity | null;
+
+  /**
+   * @param title
+   * @param description
+   * @param user
+   */
+  constructor(title: string, description: string, user?: UserEntity) {
+    super();
+    this.id = uuidv4();
+    this.title = title;
+    this.description = description;
+    this.user = user;
+    this.createAt = new Date();
+  }
 }
