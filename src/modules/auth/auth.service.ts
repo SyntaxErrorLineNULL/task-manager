@@ -9,10 +9,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { UserService } from '../user/user.service';
-import { SignUpDto } from '../common/dto/signUp.dto';
-import { SignInDto } from '../common/dto/signIn.dto';
-import { PasswordService } from '../../application/service/password.service';
-import { TokenDto } from '../common/dto/token.dto';
+import { SignUpSchema } from '../common/request/signUp.schema';
+import { SignInSchema } from '../common/request/signIn.schema';
+import { TokenSchema } from '../common/request/token.schema';
 import { jwtConfig } from '../../../config/jwt.config';
 import { JwtService } from '@nestjs/jwt';
 import UserEntity from '../../application/entity/user.entity';
@@ -20,18 +19,17 @@ import * as bcrypt from 'bcryptjs';
 import { UserStatusEnum } from '../../application/entity/user.status.enum';
 import { MailService } from '../../core/mail/mail.service';
 import { random } from 'lodash';
-import { ConfirmationAuthenticationDto } from '../common/dto/confirmation.authentication.dto';
+import { ConfirmationAuthenticationSchema } from '../common/request/confirmation.authentication.schema';
 
 @Injectable()
 export class AuthService {
-  constructor(
+  public constructor(
     private readonly userService: UserService,
     private readonly mailService: MailService,
-    private readonly passwordService: PasswordService,
     private readonly jwtService: JwtService,
   ) {}
 
-  public async signUp(schema: SignUpDto): Promise<UserEntity> {
+  public async signUp(schema: SignUpSchema): Promise<UserEntity> {
     const user = await this.userService.findByEmail(schema.email);
     if (user !== undefined) {
       throw new HttpException(
@@ -40,7 +38,7 @@ export class AuthService {
       );
     }
 
-    const token = Math.floor(random() * 99999 + Math.random() * 9999).toString();
+    const token = Math.floor(random() * 99999 + random() * 9999).toString();
 
     await this.mailService.send(schema.email, 'Welcome', './index', {
       name: schema.name,
@@ -49,7 +47,7 @@ export class AuthService {
     return await this.userService.createUser(schema, token);
   }
 
-  public async signIn(schema: SignInDto): Promise<TokenDto> {
+  public async signIn(schema: SignInSchema): Promise<TokenSchema> {
     const user = await this.userService.findByEmail(schema.email);
     const isPasswordValid = await bcrypt.compareSync(
       schema.password,
@@ -66,7 +64,7 @@ export class AuthService {
   }
 
   public async confirmationAuthentication(
-    schema: ConfirmationAuthenticationDto,
+    schema: ConfirmationAuthenticationSchema,
   ): Promise<void> {
     await this.userService.confirmationToken(schema.token);
   }
@@ -75,9 +73,9 @@ export class AuthService {
    * @private
    * @param user
    */
-  private async generateJWTToken(user: UserEntity): Promise<TokenDto> {
+  private async generateJWTToken(user: UserEntity): Promise<TokenSchema> {
     const payload = { userId: user.id };
-    return new TokenDto({
+    return new TokenSchema({
       expiresIn: jwtConfig.jwtExpirationTime,
       accessToken: await this.jwtService.signAsync(payload),
     });
