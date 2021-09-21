@@ -45,7 +45,7 @@ export class TaskDto {
    * @param categoryIds
    * @param user
    */
-  constructor(
+  public constructor(
     id: string,
     title: string,
     description: string,

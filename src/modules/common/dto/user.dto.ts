@@ -37,7 +37,7 @@ export class UserDto {
    * @param status
    * @param role
    */
-  constructor(
+  public constructor(
     userId: string,
     name: string,
     email: string,
