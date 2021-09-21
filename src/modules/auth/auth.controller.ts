@@ -13,22 +13,22 @@ import {
 } from '@nestjs/common';
 import { ApiBody, ApiTags, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { SignUpDto } from '../common/dto/signUp.dto';
-import { SignInDto } from '../common/dto/signIn.dto';
-import { TokenDto } from '../common/dto/token.dto';
+import { SignUpSchema } from '../common/request/signUp.schema';
+import { SignInSchema } from '../common/request/signIn.schema';
+import { TokenSchema } from '../common/request/token.schema';
 import UserEntity from '../../application/entity/user.entity';
 import { JwtAuthGuard } from '../../core/guard/jwt-auth.guard';
-import { ConfirmationAuthenticationDto } from '../common/dto/confirmation.authentication.dto';
+import { ConfirmationAuthenticationSchema } from '../common/request/confirmation.authentication.schema';
 import { Response } from 'express';
 import { Authentication } from '../../core/decorator/user.decorator';
 
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
-  constructor(private service: AuthService) {}
+  public constructor(private service: AuthService) {}
 
   @Post('sign-up')
-  @ApiBody({ type: [SignUpDto] })
+  @ApiBody({ type: [SignUpSchema] })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Registration user',
@@ -38,33 +38,33 @@ export class AuthController {
     status: HttpStatus.FORBIDDEN,
     description: 'Forbidden',
   })
-  public async signUp(@Body() body: SignUpDto): Promise<UserEntity> {
+  public async signUp(@Body() body: SignUpSchema): Promise<UserEntity> {
     return await this.service.signUp(body);
   }
 
   @Post('sign-in')
-  @ApiBody({ type: [SignInDto] })
+  @ApiBody({ type: [SignInSchema] })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Successfully authentication',
-    type: TokenDto,
+    type: TokenSchema,
   })
   @ApiResponse({
     status: HttpStatus.FORBIDDEN,
     description: 'Forbidden',
   })
-  public async signIn(@Body() body: SignInDto): Promise<TokenDto> {
+  public async signIn(@Body() body: SignInSchema): Promise<TokenSchema> {
     return await this.service.signIn(body);
   }
 
   @Post('confirmation')
-  @ApiBody({ type: [ConfirmationAuthenticationDto] })
+  @ApiBody({ type: [ConfirmationAuthenticationSchema] })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'your email is confirm',
   })
   public async confirmationAuth(
-    @Body() body: ConfirmationAuthenticationDto,
+    @Body() body: ConfirmationAuthenticationSchema,
     @Res() response: Response,
   ): Promise<Response> {
     await this.service.confirmationAuthentication(body);

@@ -5,7 +5,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { PasswordService } from '../../application/service/password.service';
 import { UserModule } from '../user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
@@ -29,7 +28,7 @@ import { MailModule } from '../../core/mail/mail.module';
       },
     }),
   ],
-  providers: [AuthService, PasswordService, JwtStrategy],
+  providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
   exports: [AuthService],
 })
