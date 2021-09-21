@@ -5,8 +5,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from '../../application/repository/user.repository';
-import { PasswordService } from '../../application/service/password.service';
-import { SignUpDto } from '../common/dto/signUp.dto';
+import { SignUpSchema } from '../common/request/signUp.schema';
 import UserEntity from '../../application/entity/user.entity';
 import * as bcrypt from 'bcryptjs';
 import { TokenEntity } from '../../application/entity/token.entity';
@@ -17,10 +16,9 @@ export class UserService {
   constructor(
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
-    private passwordService: PasswordService,
   ) {}
 
-  public async createUser(schema: SignUpDto, token): Promise<UserEntity> {
+  public async createUser(schema: SignUpSchema, token): Promise<UserEntity> {
     const { name, email, password } = schema;
     const user = new UserEntity();
     user.name = name;
