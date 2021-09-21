@@ -14,11 +14,12 @@ import {
   Request,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
-import { CreateTaskDto } from '../common/dto/create.task.dto';
+import { CreateTaskSchema } from '../common/request/create.task.schema';
 import TaskEntity from '../../application/entity/task.entity';
 import { ApiBody, ApiTags, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../core/guard/jwt-auth.guard';
 import { Authentication } from '../../core/decorator/user.decorator';
+import { TaskDto } from '../common/dto/task.dto';
 
 @Controller('task')
 @ApiTags('task')
@@ -27,26 +28,31 @@ export class TaskController {
 
   @Post('create')
   @UseGuards(JwtAuthGuard)
-  @ApiBody({ type: [CreateTaskDto] })
+  @ApiBody({ type: [CreateTaskSchema] })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Create task',
-    type: CreateTaskDto,
+    type: CreateTaskSchema,
   })
   async createTask(
-    @Body() body: CreateTaskDto,
+    @Body() body: CreateTaskSchema,
     @Request() req,
   ): Promise<TaskEntity> {
     return await this.taskService.createTask(body, req.user);
   }
 
   @Get('tasks')
-  async getAllTask(): Promise<TaskEntity[]> {
+  async getAllTask(): Promise<TaskDto[]> {
     return await this.taskService.getAll();
   }
 
   @Get('/:id')
-  async getTaskById(@Param('id') id: string): Promise<TaskEntity> {
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get task by id',
+    type: TaskDto,
+  })
+  async getTaskById(@Param('id') id: string): Promise<TaskDto> {
     return await this.taskService.getById(id);
   }
 
@@ -54,7 +60,7 @@ export class TaskController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Create task',
-    type: CreateTaskDto,
+    type: CreateTaskSchema,
   })
   @ApiParam({
     name: 'id',
@@ -72,7 +78,10 @@ export class TaskController {
     status: HttpStatus.CREATED,
     description: 'Close task',
   })
-  async doneTask(@Param('id') id: string, @Authentication() auth): Promise<TaskEntity> {
+  async doneTask(
+    @Param('id') id: string,
+    @Authentication() auth,
+  ): Promise<TaskEntity> {
     return await this.taskService.done(id, auth);
   }
 }
