@@ -20,11 +20,12 @@ import { ApiBody, ApiTags, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../core/guard/jwt-auth.guard';
 import { Authentication } from '../../core/decorator/user.decorator';
 import { TaskDto } from '../common/dto/task.dto';
+import { TaskCollection } from '../common/dto/task.collection';
 
 @Controller('task')
 @ApiTags('task')
 export class TaskController {
-  constructor(private taskService: TaskService) {}
+  public constructor(private taskService: TaskService) {}
 
   @Post('create')
   @UseGuards(JwtAuthGuard)
@@ -34,7 +35,7 @@ export class TaskController {
     description: 'Create task',
     type: CreateTaskSchema,
   })
-  async createTask(
+  public async createTask(
     @Body() body: CreateTaskSchema,
     @Request() req,
   ): Promise<TaskEntity> {
@@ -42,7 +43,12 @@ export class TaskController {
   }
 
   @Get('tasks')
-  async getAllTask(): Promise<TaskDto[]> {
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get all task',
+    type: TaskCollection,
+  })
+  public async getAllTask(): Promise<TaskCollection> {
     return await this.taskService.getAll();
   }
 
@@ -52,7 +58,7 @@ export class TaskController {
     description: 'Get task by id',
     type: TaskDto,
   })
-  async getTaskById(@Param('id') id: string): Promise<TaskDto> {
+  public async getTaskById(@Param('id') id: string): Promise<TaskDto> {
     return await this.taskService.getById(id);
   }
 
@@ -68,7 +74,10 @@ export class TaskController {
     schema: { oneOf: [{ type: 'string' }] },
   })
   @Delete('remove/:id')
-  async remove(@Param('id') id: string, @Authentication() auth): Promise<void> {
+  public async remove(
+    @Param('id') id: string,
+    @Authentication() auth,
+  ): Promise<void> {
     return await this.taskService.remove(id, auth);
   }
 
@@ -78,7 +87,7 @@ export class TaskController {
     status: HttpStatus.CREATED,
     description: 'Close task',
   })
-  async doneTask(
+  public async doneTask(
     @Param('id') id: string,
     @Authentication() auth,
   ): Promise<TaskEntity> {
