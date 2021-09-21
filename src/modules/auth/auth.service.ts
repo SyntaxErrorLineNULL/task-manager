@@ -46,7 +46,6 @@ export class AuthService {
       name: schema.name,
       token: token,
     });
-    console.log(token);
     return await this.userService.createUser(schema, token);
   }
 
@@ -86,7 +85,6 @@ export class AuthService {
 
   public async validate(id: string): Promise<UserEntity> {
     const user = await this.userService.getById(id);
-    console.log(user);
     if (!user || user.status !== UserStatusEnum.STATUS_ACTIVE) {
       throw new UnauthorizedException();
     }
