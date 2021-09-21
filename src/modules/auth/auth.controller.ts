@@ -68,7 +68,10 @@ export class AuthController {
     @Res() response: Response,
   ): Promise<Response> {
     await this.service.confirmationAuthentication(body);
-    return response.status(HttpStatus.CREATED).json('your email is confirm');
+    return response
+      .status(HttpStatus.CREATED)
+      .json('Your email is confirm')
+      .header('Content-Type', 'application/json');
   }
 
   @UseGuards(JwtAuthGuard)
