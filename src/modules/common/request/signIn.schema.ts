@@ -6,17 +6,13 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsEmail } from 'class-validator';
 import { IsPassword } from '../../../core/validator/password.decorator';
 
-export class SignUpDto {
-  @IsNotEmpty()
-  @ApiProperty()
-  readonly name: string;
-
+export class SignInSchema {
   @IsNotEmpty()
   @IsEmail()
   @ApiProperty()
   readonly email: string;
 
-  @IsPassword()
   @ApiProperty()
+  @IsPassword()
   readonly password: string;
 }

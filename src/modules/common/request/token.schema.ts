@@ -4,7 +4,7 @@
 
 import { ApiProperty } from '@nestjs/swagger';
 
-export class TokenDto {
+export class TokenSchema {
   @ApiProperty({ description: 'auth-token expires' })
   public expiresIn: number;
 
