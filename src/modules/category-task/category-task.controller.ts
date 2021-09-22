@@ -2,7 +2,7 @@
  * Author: SyntaxErrorLineNULL.
  */
 
-import { Body, Controller, Post, Get } from '@nestjs/common';
+import { Body, Controller, Post, Get, Param } from '@nestjs/common';
 import { CategoryTaskService } from './category-task.service';
 import CreateCategorySchema from '../common/request/create.category.schema';
 import { CategoryDto } from '../common/dto/category.dto';
@@ -20,5 +20,10 @@ export class CategoryTaskController {
   @Get('category-tasks')
   public async getAllCategory(): Promise<CategoryCollection> {
     return await this.service.getAll();
+  }
+
+  @Post('remove/:id')
+  public async remove(@Param('id') id: number): Promise<void> {
+    await this.service.remove(id);
   }
 }
