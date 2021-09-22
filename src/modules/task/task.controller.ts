@@ -34,7 +34,7 @@ export class TaskController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Create task',
-    type: CreateTaskSchema,
+    type: TaskDto,
   })
   public async createTask(
     @Body() body: CreateTaskSchema,
