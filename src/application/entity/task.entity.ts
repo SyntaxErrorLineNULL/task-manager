@@ -65,8 +65,13 @@ export default class TaskEntity extends BaseEntity {
     this.createAt = new Date();
   }
 
-  public async doneTask(): Promise<void> {
+  public doneTask(): void {
     this.finishAt = new Date();
     this.status = TaskStatusEnum.STATUS_DONE;
+  }
+
+  public update(title?: string, description?: string): void {
+    this.title = title ?? this.title;
+    this.description = description ?? this.description;
   }
 }
