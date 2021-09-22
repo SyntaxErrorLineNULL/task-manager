@@ -12,6 +12,7 @@ import UserEntity from '../../application/entity/user.entity';
 import { TaskMapper } from '../common/mapper/task.mapper';
 import { TaskDto } from '../common/dto/task.dto';
 import { TaskCollection } from '../common/dto/task.collection';
+import { UpdateTaskSchema } from '../common/request/update.task.schema';
 
 @Injectable()
 export class TaskService {
@@ -30,7 +31,7 @@ export class TaskService {
   public async createTask(
     schema: CreateTaskSchema,
     user: UserEntity,
-  ): Promise<TaskEntity> {
+  ): Promise<TaskDto> {
     const task = new TaskEntity(schema.title, schema.description, user);
     task.categoryIds = [];
 
@@ -39,7 +40,8 @@ export class TaskService {
       task.categoryIds.push(cat);
     }
 
-    return await this.taskRepository.save(task);
+    await this.taskRepository.save(task);
+    return this.taskMapper.mapper(task);
   }
 
   public async getAll(): Promise<TaskCollection> {
@@ -49,26 +51,33 @@ export class TaskService {
   }
 
   /**
-   * @param id
+   * @param taskId
    */
-  public async getById(id: string): Promise<TaskDto> {
-    const task = await this.taskRepository.getTaskById(id);
+  public async getById(taskId: string): Promise<TaskDto> {
+    const task = await this.taskRepository.getTaskById(taskId);
     return this.taskMapper.mapper(task);
   }
 
   /**
-   * @param id
+   * @param taskId
    * @param user
    */
-  public async remove(id: string, user: UserEntity): Promise<void> {
-    const task = await this.owner(user, id);
+  public async remove(taskId: string, user: UserEntity): Promise<void> {
+    const task = await this.owner(user, taskId);
     await this.taskRepository.removeTask(task.id);
   }
 
-  public async done(id: string, user: UserEntity): Promise<TaskEntity> {
-    const task = await this.owner(user, id);
+  public async done(taskId: string, user: UserEntity): Promise<TaskEntity> {
+    const task = await this.owner(user, taskId);
     await task.doneTask();
     return task;
+  }
+
+  public async update(taskId: string, schema: UpdateTaskSchema, user: UserEntity): Promise<TaskDto> {
+    const task = await this.owner(user, taskId);
+    task.update(schema.title, schema.description);
+    await this.taskRepository.save(task);
+    return this.taskMapper.mapper(task);
   }
 
   /**
