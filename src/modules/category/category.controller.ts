@@ -3,7 +3,7 @@
  */
 
 import { Body, Controller, Post, Get, Param, HttpStatus } from '@nestjs/common';
-import { CategoryTaskService } from './category-task.service';
+import { CategoryService } from './category.service';
 import CreateCategorySchema from '../common/request/create.category.schema';
 import { CategoryDto } from '../common/dto/category.dto';
 import { CategoryCollection } from '../common/dto/category.collection';
@@ -12,8 +12,8 @@ import { ApiBody, ApiTags, ApiResponse, ApiParam } from '@nestjs/swagger';
 
 @Controller('category')
 @ApiTags('category')
-export class CategoryTaskController {
-  public constructor(private service: CategoryTaskService) {}
+export class CategoryController {
+  public constructor(private service: CategoryService) {}
 
   @Post('create')
   @ApiBody({ type: [CreateCategorySchema] })

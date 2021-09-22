@@ -12,7 +12,7 @@ import { CategoryCollection } from '../common/dto/category.collection';
 import { CategoryUpdateSchema } from '../common/request/category.update.schema';
 
 @Injectable()
-export class CategoryTaskService {
+export class CategoryService {
   public constructor(
     @InjectRepository(CategoryRepository)
     private readonly categoryRepository: CategoryRepository,

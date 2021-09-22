@@ -3,15 +3,15 @@
  */
 
 import { Module } from '@nestjs/common';
-import { CategoryTaskService } from './category-task.service';
+import { CategoryService } from './category.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import CategoryRepository from '../../application/repository/category.repository';
-import { CategoryTaskController } from './category-task.controller';
+import { CategoryController } from './category.controller';
 import { CategoryMapper } from '../common/mapper/category.mapper';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CategoryRepository])],
-  controllers: [CategoryTaskController],
-  providers: [CategoryTaskService, CategoryMapper],
+  controllers: [CategoryController],
+  providers: [CategoryService, CategoryMapper],
 })
-export class CategoryTaskModule {}
+export class CategoryModule {}
