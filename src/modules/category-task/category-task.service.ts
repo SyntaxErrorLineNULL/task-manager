@@ -5,22 +5,28 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import CategoryRepository from '../../application/repository/category.repository';
-import CategoryEntity from '../../application/entity/category.entity';
 import CreateCategorySchema from '../common/request/create.category.schema';
+import { CategoryMapper } from '../common/mapper/category.mapper';
+import { CategoryDto } from '../common/dto/category.dto';
+import { CategoryCollection } from '../common/dto/category.collection';
 
 @Injectable()
 export class CategoryTaskService {
   public constructor(
     @InjectRepository(CategoryRepository)
-    private categoryRepository: CategoryRepository,
+    private readonly categoryRepository: CategoryRepository,
+    private readonly categoryMapper: CategoryMapper,
   ) {}
 
-  public async create(entity: CreateCategorySchema): Promise<CategoryEntity> {
+  public async create(entity: CreateCategorySchema): Promise<CategoryDto> {
     const category = this.categoryRepository.create(entity);
-    return await this.categoryRepository.save(category);
+    await this.categoryRepository.save(category);
+    return this.categoryMapper.mapper(category);
   }
 
-  public async getAll(): Promise<CategoryEntity[]> {
-    return await this.categoryRepository.getAll();
+  public async getAll(): Promise<CategoryCollection> {
+    const cat = await this.categoryRepository.getAll();
+    const items = cat.map((cat) => this.categoryMapper.mapper(cat));
+    return new CategoryCollection(items);
   }
 }
