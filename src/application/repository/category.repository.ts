@@ -11,7 +11,7 @@ export default class CategoryRepository extends Repository<CategoryEntity> {
     return await this.find({ order: { id: 'DESC' } });
   }
 
-  public async getById(id: string): Promise<CategoryEntity> {
+  public async getById(id: number): Promise<CategoryEntity> {
     const category = await this.findOne({ where: { id } });
     if (category === null) {
       throw new NotFoundException(`Category with ID "${id}" is not found`);
