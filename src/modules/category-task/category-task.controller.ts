@@ -9,7 +9,7 @@ import { CategoryDto } from '../common/dto/category.dto';
 import { CategoryCollection } from '../common/dto/category.collection';
 import { CategoryUpdateSchema } from '../common/request/category.update.schema';
 
-@Controller('category-task')
+@Controller('category')
 export class CategoryTaskController {
   public constructor(private service: CategoryTaskService) {}
 
