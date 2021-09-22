@@ -21,6 +21,7 @@ import { JwtAuthGuard } from '../../core/guard/jwt-auth.guard';
 import { Authentication } from '../../core/decorator/user.decorator';
 import { TaskDto } from '../common/dto/task.dto';
 import { TaskCollection } from '../common/dto/task.collection';
+import { UpdateTaskSchema } from '../common/request/update.task.schema';
 
 @Controller('task')
 @ApiTags('task')
@@ -38,7 +39,7 @@ export class TaskController {
   public async createTask(
     @Body() body: CreateTaskSchema,
     @Request() req,
-  ): Promise<TaskEntity> {
+  ): Promise<TaskDto> {
     return await this.taskService.createTask(body, req.user);
   }
 
@@ -62,23 +63,22 @@ export class TaskController {
     return await this.taskService.getById(id);
   }
 
+  @Delete('remove/:id')
   @UseGuards(JwtAuthGuard)
   @ApiResponse({
     status: HttpStatus.CREATED,
-    description: 'Create task',
-    type: CreateTaskSchema,
+    description: 'Remove task',
   })
   @ApiParam({
     name: 'id',
     required: true,
     schema: { oneOf: [{ type: 'string' }] },
   })
-  @Delete('remove/:id')
   public async remove(
     @Param('id') id: string,
     @Authentication() auth,
   ): Promise<void> {
-    return await this.taskService.remove(id, auth);
+    await this.taskService.remove(id, auth);
   }
 
   @Post('done/:id')
@@ -92,5 +92,21 @@ export class TaskController {
     @Authentication() auth,
   ): Promise<TaskEntity> {
     return await this.taskService.done(id, auth);
+  }
+
+  @Post('update/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBody({ type: [UpdateTaskSchema] })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Update task',
+    type: TaskDto,
+  })
+  public async update(
+    @Body() body: UpdateTaskSchema,
+    @Param('id') id: string,
+    @Authentication() auth,
+  ): Promise<TaskDto> {
+    return this.taskService.update(id, body, auth);
   }
 }
