@@ -14,7 +14,7 @@ export class CategoryTaskController {
   public constructor(private service: CategoryTaskService) {}
 
   @Post('create')
-  public async createCategoryTask(@Body() body: CreateCategorySchema): Promise<CategoryDto> {
+  public async create(@Body() body: CreateCategorySchema): Promise<CategoryDto> {
     return await this.service.create(body);
   }
 
