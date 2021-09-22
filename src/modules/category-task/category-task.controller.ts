@@ -35,4 +35,9 @@ export class CategoryTaskController {
   ): Promise<CategoryDto> {
     return await this.service.update(id, body);
   }
+
+  @Post('/:id')
+  public async singleCategory(@Param('id') id: number): Promise<CategoryDto> {
+    return await this.service.getById(id);
+  }
 }
