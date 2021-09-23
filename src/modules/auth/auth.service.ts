@@ -37,9 +37,7 @@ export class AuthService {
       );
     }
 
-    const token =
-      Math.random().toString(36).substring(2, 5) +
-      Math.random().toString(36).substring(2, 5);
+    const token = Math.random().toString(36).substring(2, 5);
 
     await this.mailService.send(schema.email, 'Welcome', './index', {
       name: schema.name,
