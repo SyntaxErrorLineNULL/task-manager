@@ -18,7 +18,6 @@ import UserEntity from '../../application/entity/user.entity';
 import * as bcrypt from 'bcryptjs';
 import { UserStatusEnum } from '../../application/entity/user.status.enum';
 import { MailService } from '../../core/mail/mail.service';
-import { random } from 'lodash';
 import { ConfirmationAuthenticationSchema } from '../common/request/confirmation.authentication.schema';
 
 @Injectable()
@@ -38,7 +37,9 @@ export class AuthService {
       );
     }
 
-    const token = Math.floor(random() * 99999 + random() * 9999).toString();
+    const token =
+      Math.random().toString(36).substring(2, 5) +
+      Math.random().toString(36).substring(2, 5);
 
     await this.mailService.send(schema.email, 'Welcome', './index', {
       name: schema.name,
