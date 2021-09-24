@@ -3,6 +3,7 @@
  */
 
 import { Entity, Column, CreateDateColumn } from 'typeorm';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 @Entity('token')
 export class TokenEntity {
@@ -15,4 +16,10 @@ export class TokenEntity {
     nullable: true,
   })
   expires?: Date;
+
+  public validate(date: Date): void {
+    if (this.expires > date) {
+      throw new HttpException('Token is expired', HttpStatus.FORBIDDEN);
+    }
+  }
 }
