@@ -11,6 +11,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from '../../core/guard/jwt.strategy';
 import { jwtConfig } from '../../../config/jwt.config';
 import { MailModule } from '../../core/mail/mail.module';
+import { UserMapper } from '../common/mapper/user.mapper';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { MailModule } from '../../core/mail/mail.module';
       },
     }),
   ],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, UserMapper],
   controllers: [AuthController],
   exports: [AuthService],
 })
