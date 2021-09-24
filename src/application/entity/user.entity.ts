@@ -4,7 +4,6 @@
 
 import {
   BaseEntity,
-  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -16,31 +15,24 @@ import { v4 as uuidv4 } from 'uuid';
 import { Role } from './role';
 import TaskEntity from './task.entity';
 import { TokenEntity } from './token.entity';
+import * as bcrypt from 'bcryptjs';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 @Entity('user')
 export default class UserEntity extends BaseEntity {
   @PrimaryColumn({ type: 'uuid' })
   id: string;
 
-  @BeforeInsert()
-  async generateId(): Promise<void> {
-    this.id = await uuidv4();
-  }
-
   @Column({ type: 'varchar' })
   name: string;
 
-  @Column({ unique: true })
+  @Column({ type: 'varchar', unique: true })
   email: string;
 
   @Column({ type: 'varchar' })
   passwordHash: string;
 
-  @CreateDateColumn({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'createdAt',
-  })
+  @CreateDateColumn({ type: 'timestamp', name: 'createdAt' })
   createAt: Date;
 
   @Column({ default: 0 })
@@ -60,5 +52,32 @@ export default class UserEntity extends BaseEntity {
   tasks: TaskEntity[];
 
   @Column(() => TokenEntity)
-  confirmationToken?: TokenEntity;
+  confirmationToken?: TokenEntity = null;
+
+  constructor(name: string, email: string, passwordHash: string) {
+    super();
+    this.id = uuidv4();
+    this.name = name;
+    this.email = email;
+    this.passwordHash = passwordHash;
+    this.createAt = new Date();
+  }
+
+  public confirmationRegistration(date: Date): void {
+    this.confirmationToken.validate(date);
+    this.status = UserStatusEnum.STATUS_ACTIVE;
+    this.confirmationToken.value = null;
+    this.confirmationToken.expires = null;
+  }
+
+  public async validate(password: string): Promise<void> {
+    if ((await bcrypt.compareSync(password, this.passwordHash)) ||
+      this.status !== UserStatusEnum.STATUS_ACTIVE
+    ) {
+      throw new HttpException(
+        'Password is not correct. Maybe... . Check your inbox, you may not have noticed the message that your account has been blocked',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+  }
 }
