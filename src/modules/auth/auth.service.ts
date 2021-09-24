@@ -15,10 +15,12 @@ import { TokenSchema } from '../common/request/token.schema';
 import { jwtConfig } from '../../../config/jwt.config';
 import { JwtService } from '@nestjs/jwt';
 import UserEntity from '../../application/entity/user.entity';
-import * as bcrypt from 'bcryptjs';
 import { UserStatusEnum } from '../../application/entity/user.status.enum';
 import { MailService } from '../../core/mail/mail.service';
 import { ConfirmationAuthenticationSchema } from '../common/request/confirmation.authentication.schema';
+import { TokenEntity } from '../../application/entity/token.entity';
+import { UserMapper } from '../common/mapper/user.mapper';
+import { UserDto } from '../common/dto/user.dto';
 
 @Injectable()
 export class AuthService {
@@ -26,36 +28,35 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly mailService: MailService,
     private readonly jwtService: JwtService,
+    private readonly userMapper: UserMapper,
   ) {}
 
-  public async signUp(schema: SignUpSchema): Promise<UserEntity> {
-    const user = await this.userService.findByEmail(schema.email);
+  public async signUp(schema: SignUpSchema): Promise<UserDto> {
+    let user = await this.userService.findByEmail(schema.email);
     if (user !== undefined) {
       throw new HttpException(
-        'this email is already in use',
+        'This email is already in use',
         HttpStatus.FORBIDDEN,
       );
     }
 
-    const token = Math.random().toString(36).substring(2, 9);
+    const token = new TokenEntity();
+    token.value = Math.random().toString(36).substring(2, 9);
 
+    user = await this.userService.create(schema, token);
     await this.mailService.send(schema.email, 'Welcome', './index', {
       name: schema.name,
-      token: token,
+      token: token.value,
     });
-    return await this.userService.createUser(schema, token);
+    return this.userMapper.mapper(user);
   }
 
   public async signIn(schema: SignInSchema): Promise<TokenSchema> {
     const user = await this.userService.findByEmail(schema.email);
-    const isPasswordValid = await bcrypt.compareSync(
-      schema.password,
-      user.passwordHash,
-    );
 
-    if (!user || !isPasswordValid || user.status !== UserStatusEnum.STATUS_ACTIVE) {
+    if (user === undefined) {
       throw new HttpException(
-        'Password or email is not correct. Or your account is not confirmation',
+        'Sorry, but no such user exists',
         HttpStatus.UNAUTHORIZED,
       );
     }
