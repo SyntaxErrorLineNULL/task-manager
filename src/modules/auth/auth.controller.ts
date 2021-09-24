@@ -16,11 +16,11 @@ import { AuthService } from './auth.service';
 import { SignUpSchema } from '../common/request/signUp.schema';
 import { SignInSchema } from '../common/request/signIn.schema';
 import { TokenSchema } from '../common/request/token.schema';
-import UserEntity from '../../application/entity/user.entity';
 import { JwtAuthGuard } from '../../core/guard/jwt-auth.guard';
 import { ConfirmationAuthenticationSchema } from '../common/request/confirmation.authentication.schema';
 import { Response } from 'express';
 import { Authentication } from '../../core/decorator/user.decorator';
+import { UserDto } from '../common/dto/user.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -32,13 +32,13 @@ export class AuthController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Registration user',
-    type: UserEntity,
+    type: UserDto,
   })
   @ApiResponse({
     status: HttpStatus.FORBIDDEN,
     description: 'Forbidden',
   })
-  public async signUp(@Body() body: SignUpSchema): Promise<UserEntity> {
+  public async signUp(@Body() body: SignUpSchema): Promise<UserDto> {
     return await this.service.signUp(body);
   }
 
@@ -68,10 +68,7 @@ export class AuthController {
     @Res() response: Response,
   ): Promise<Response> {
     await this.service.confirmationAuthentication(body);
-    return response
-      .status(HttpStatus.CREATED)
-      .json('Your email is confirm')
-      .header('Content-Type', 'application/json');
+    return response.status(HttpStatus.CREATED).json('Your email is confirm');
   }
 
   @UseGuards(JwtAuthGuard)
