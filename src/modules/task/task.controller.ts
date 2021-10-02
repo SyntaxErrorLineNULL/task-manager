@@ -90,4 +90,9 @@ export class TaskController {
   ): Promise<TaskDto> {
     return this.taskService.update(id, body, auth);
   }
+
+  @Get('/')
+  public testMethod(): string {
+    return 'Hello World!';
+  }
 }
