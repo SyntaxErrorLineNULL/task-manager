@@ -2,15 +2,7 @@
  * Author: SyntaxErrorLineNULL.
  */
 
-import {
-  Controller,
-  Post,
-  Body,
-  Get,
-  UseGuards,
-  HttpStatus,
-  Res,
-} from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, HttpStatus, Res } from '@nestjs/common';
 import { ApiBody, ApiTags, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { SignUpSchema } from '../common/request/signUp.schema';
