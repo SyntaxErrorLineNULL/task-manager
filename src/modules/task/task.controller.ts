@@ -2,17 +2,7 @@
  * Author: SyntaxErrorLineNULL.
  */
 
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Delete,
-  HttpStatus,
-  UseGuards,
-  Request,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Delete, HttpStatus, UseGuards, Request } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskSchema } from '../common/request/create.task.schema';
 import TaskEntity from '../../application/entity/task.entity';
@@ -36,10 +26,7 @@ export class TaskController {
     description: 'Create task',
     type: TaskDto,
   })
-  public async createTask(
-    @Body() body: CreateTaskSchema,
-    @Request() req,
-  ): Promise<TaskDto> {
+  public async createTask(@Body() body: CreateTaskSchema, @Request() req): Promise<TaskDto> {
     return await this.taskService.createTask(body, req.user);
   }
 
@@ -74,10 +61,7 @@ export class TaskController {
     required: true,
     schema: { oneOf: [{ type: 'string' }] },
   })
-  public async remove(
-    @Param('id') id: string,
-    @Authentication() auth,
-  ): Promise<void> {
+  public async remove(@Param('id') id: string, @Authentication() auth): Promise<void> {
     await this.taskService.remove(id, auth);
   }
 
@@ -87,10 +71,7 @@ export class TaskController {
     status: HttpStatus.CREATED,
     description: 'Close task',
   })
-  public async doneTask(
-    @Param('id') id: string,
-    @Authentication() auth,
-  ): Promise<TaskEntity> {
+  public async doneTask(@Param('id') id: string, @Authentication() auth): Promise<TaskEntity> {
     return await this.taskService.done(id, auth);
   }
 
