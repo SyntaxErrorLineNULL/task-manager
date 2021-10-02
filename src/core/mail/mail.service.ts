@@ -9,12 +9,7 @@ import { Injectable } from '@nestjs/common';
 export class MailService {
   constructor(private readonly mailerService: MailerService) {}
 
-  public async send(
-    email: string,
-    message: string,
-    view: string,
-    html: any,
-  ): Promise<void> {
+  public async send(email: string, message: string, view: string, html: any): Promise<void> {
     await this.mailerService
       .sendMail({
         to: email,
@@ -22,10 +17,10 @@ export class MailService {
         template: view,
         context: html,
       })
-      .then((success) => {
+      .then(success => {
         console.log(success);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   }
