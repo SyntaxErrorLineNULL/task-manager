@@ -28,10 +28,7 @@ export class TaskService {
    * @param schema
    * @param user
    */
-  public async createTask(
-    schema: CreateTaskSchema,
-    user: UserEntity,
-  ): Promise<TaskDto> {
+  public async createTask(schema: CreateTaskSchema, user: UserEntity): Promise<TaskDto> {
     const task = new TaskEntity(schema.title, schema.description, user);
     task.categoryIds = [];
 
@@ -46,7 +43,7 @@ export class TaskService {
 
   public async getAll(): Promise<TaskCollection> {
     const tasks = await this.taskRepository.getAllTask();
-    const items = tasks.map((task) => this.taskMapper.mapper(task));
+    const items = tasks.map(task => this.taskMapper.mapper(task));
     return new TaskCollection(items);
   }
 
