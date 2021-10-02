@@ -2,12 +2,7 @@
  * Author: SyntaxErrorLineNULL.
  */
 
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { SignUpSchema } from '../common/request/signUp.schema';
 import { SignInSchema } from '../common/request/signIn.schema';
@@ -34,10 +29,7 @@ export class AuthService {
   public async signUp(schema: SignUpSchema): Promise<UserDto> {
     let user = await this.userService.findByEmail(schema.email);
     if (user !== undefined) {
-      throw new HttpException(
-        'This email is already in use',
-        HttpStatus.FORBIDDEN,
-      );
+      throw new HttpException('This email is already in use', HttpStatus.FORBIDDEN);
     }
 
     const token = new TokenEntity();
@@ -55,17 +47,12 @@ export class AuthService {
     const user = await this.userService.findByEmail(schema.email);
 
     if (user === undefined) {
-      throw new HttpException(
-        'Sorry, but no such user exists',
-        HttpStatus.UNAUTHORIZED,
-      );
+      throw new HttpException('Sorry, but no such user exists', HttpStatus.UNAUTHORIZED);
     }
     return await this.generateJWTToken(user);
   }
 
-  public async confirmationAuthentication(
-    schema: ConfirmationAuthenticationSchema,
-  ): Promise<void> {
+  public async confirmationAuthentication(schema: ConfirmationAuthenticationSchema): Promise<void> {
     await this.userService.confirmationToken(schema.token);
   }
 
