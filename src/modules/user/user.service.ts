@@ -17,15 +17,8 @@ export class UserService {
     private userRepository: UserRepository,
   ) {}
 
-  public async create(
-    schema: SignUpSchema,
-    confirmationToken: TokenEntity,
-  ): Promise<UserEntity> {
-    const user = new UserEntity(
-      schema.name,
-      schema.email,
-      await bcrypt.hashSync(schema.password, 12),
-    );
+  public async create(schema: SignUpSchema, confirmationToken: TokenEntity): Promise<UserEntity> {
+    const user = new UserEntity(schema.name, schema.email, await bcrypt.hashSync(schema.password, 12));
 
     user.confirmationToken = confirmationToken;
     return await this.userRepository.save(user);
