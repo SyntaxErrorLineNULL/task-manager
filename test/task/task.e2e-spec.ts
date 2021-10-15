@@ -3,14 +3,30 @@
  */
 
 import request from 'supertest';
-import { HttpStatus } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { AppModule } from '../../src/app.module';
 
 describe('Task Controller', () => {
-  const url = `http://localhost:3000/task`;
+  let application: INestApplication;
+  beforeEach(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
+
+    application = moduleFixture.createNestApplication();
+    //await application.init();
+    await application.listen(30012);
+  });
 
   describe('/hello', () => {
     it('test method', () => {
-      return request(url).get('/').set('Accept', 'application/json').expect(HttpStatus.OK).expect('Hello World!');
+      console.log(application.getHttpServer());
+      return request(application.getHttpServer())
+        .get('/task')
+        .set('Accept', 'application/json')
+        .expect(HttpStatus.OK)
+        .expect('Hello World!');
     });
   });
 });

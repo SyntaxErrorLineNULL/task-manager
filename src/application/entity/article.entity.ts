@@ -20,12 +20,7 @@ export default class ArticleEntity extends BaseEntity {
   @PrimaryColumn({ type: 'uuid' })
   id: string;
 
-  @BeforeInsert()
-  async generateId(): Promise<void> {
-    this.id = await uuidv4();
-  }
-
-  @Column({ type: 'string' })
+  @Column({ type: 'string', length: 35 })
   title: string;
 
   @Column({ type: 'text' })
@@ -37,11 +32,7 @@ export default class ArticleEntity extends BaseEntity {
   @Column({ type: 'integer', default: 0 })
   views: number;
 
-  @CreateDateColumn({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'createAt',
-  })
+  @CreateDateColumn({ type: 'timestamp', name: 'createAt' })
   createAt: Date;
 
   @ManyToMany(() => CategoryEntity)
@@ -50,4 +41,13 @@ export default class ArticleEntity extends BaseEntity {
 
   @Column({ type: 'text' })
   coverId?: string;
+
+  constructor(title: string, content: string, coverId: string) {
+    super();
+    this.id = uuidv4();
+    this.title = title;
+    this.content = content;
+    this.coverId = coverId;
+    this.createAt = new Date();
+  }
 }
