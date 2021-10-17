@@ -16,7 +16,7 @@ describe('simple test', () => {
 
   describe('/hello', () => {
     test('test', async () => {
-      const response: supertest.Response = await supertest(application.app.getHttpServer())
+      await supertest(application.app.getHttpServer())
         .get('/task')
         .set('Accept', 'application/json')
         .expect(HttpStatus.OK)
