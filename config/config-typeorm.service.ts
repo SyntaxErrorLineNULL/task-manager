@@ -20,9 +20,7 @@ export class ConfigTypeormService implements TypeOrmOptionsFactory {
       entities: [__dirname + '/src/application/entity/*.entity.ts'],
       synchronize: this.config.get<boolean>('DB_SYNCHRONIZE'),
       autoLoadEntities: true,
-      logging: this.config.get<boolean>('APP_STATUS_DEV')
-        ? false
-        : ['query', 'error', 'schema'],
+      logging: this.config.get<boolean>('APP_STATUS_DEV') ? false : ['query', 'error', 'schema'],
       extra: {
         connectionLimit: 5,
       },
