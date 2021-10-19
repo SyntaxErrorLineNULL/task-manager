@@ -13,6 +13,8 @@ import { DatabaseModule } from './core/database/database.module';
 import { LoggerModule } from './core/logger/logger.module';
 import { ArticleModule } from './modules/article/article.module';
 import { ImageModule } from './modules/image/image.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { multerOptions } from '../config/multer.service';
 
 @Module({
   imports: [
@@ -20,6 +22,7 @@ import { ImageModule } from './modules/image/image.module';
       envFilePath: '.env.dev',
       isGlobal: true,
     }),
+    MulterModule.register(multerOptions),
     TaskModule,
     CategoryModule,
     UserModule,
