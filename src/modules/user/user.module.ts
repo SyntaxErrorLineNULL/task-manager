@@ -10,10 +10,7 @@ import { UserController } from './user.controller';
 import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [
-    forwardRef(() => AuthModule),
-    TypeOrmModule.forFeature([UserRepository]),
-  ],
+  imports: [forwardRef(() => AuthModule), TypeOrmModule.forFeature([UserRepository])],
   providers: [UserService],
   controllers: [UserController],
   exports: [UserService],
