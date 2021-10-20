@@ -20,7 +20,7 @@ export class AuthController {
   public constructor(private service: AuthService) {}
 
   @Post('sign-up')
-  @ApiBody({ type: [SignUpSchema] })
+  @ApiBody({ type: SignUpSchema })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Registration user',
@@ -31,11 +31,12 @@ export class AuthController {
     description: 'Forbidden',
   })
   public async signUp(@Body() body: SignUpSchema): Promise<UserDto> {
+    console.log(body.name);
     return await this.service.signUp(body);
   }
 
   @Post('sign-in')
-  @ApiBody({ type: [SignInSchema] })
+  @ApiBody({ type: SignInSchema })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Successfully authentication',
@@ -50,7 +51,7 @@ export class AuthController {
   }
 
   @Post('confirmation')
-  @ApiBody({ type: [ConfirmationAuthenticationSchema] })
+  @ApiBody({ type: ConfirmationAuthenticationSchema })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'your email is confirm',

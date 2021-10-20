@@ -27,6 +27,7 @@ export class AuthService {
   ) {}
 
   public async signUp(schema: SignUpSchema): Promise<UserDto> {
+    console.log(schema);
     let user = await this.userService.findByEmail(schema.email);
     if (user !== undefined) {
       throw new HttpException('This email is already in use', HttpStatus.FORBIDDEN);
