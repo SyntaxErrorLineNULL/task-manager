@@ -3,8 +3,8 @@
  */
 
 import { ApiProperty } from '@nestjs/swagger';
-import { UserStatusEnum } from '../../../application/entity/user.status.enum';
-import { Role } from '../../../application/entity/role';
+import { UserStatusEnum } from '../../user/enum/user.status.enum';
+import { Role } from '../../user/enum/role';
 
 export class UserDto {
   @ApiProperty()

@@ -5,8 +5,8 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserRepository } from '../../application/repository/user.repository';
-import { UserController } from './user.controller';
+import { UserRepository } from './entity/user.repository';
+import { UserController } from '../../api/controller/user.controller';
 import { AuthModule } from '../auth/auth.module';
 import { PasswordService } from './service/password.service';
 

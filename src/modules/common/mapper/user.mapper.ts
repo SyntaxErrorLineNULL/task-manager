@@ -1,11 +1,11 @@
 /**
  * Author: SyntaxErrorLineNULL.
  */
-import UserEntity from '../../../application/entity/user.entity';
+import { User } from '../../user/entity/user.entity';
 import { UserDto } from '../dto/user.dto';
 
 export class UserMapper {
-  public mapper(entity: UserEntity): UserDto {
+  public mapper(entity: User): UserDto {
     return new UserDto(
       entity.id,
       entity.name,

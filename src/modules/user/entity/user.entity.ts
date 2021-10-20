@@ -3,16 +3,16 @@
  */
 
 import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryColumn, OneToMany } from 'typeorm';
-import { UserStatusEnum } from './user.status.enum';
+import { UserStatusEnum } from '../enum/user.status.enum';
 import { v4 as uuidv4 } from 'uuid';
-import { Role } from './role';
-import TaskEntity from './task.entity';
-import { TokenEntity } from './token.entity';
+import { Role } from '../enum/role';
+import { Task } from '../../task/entity/task.entity';
+import { Token } from './token.entity';
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { PasswordService } from '../../modules/user/service/password.service';
+import { PasswordService } from '../service/password.service';
 
 @Entity('user')
-export default class UserEntity extends BaseEntity {
+export class User extends BaseEntity {
   @PrimaryColumn({ type: 'uuid' })
   id: string;
 
@@ -41,11 +41,11 @@ export default class UserEntity extends BaseEntity {
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
 
-  @OneToMany(() => TaskEntity, task => task.user, { eager: true })
-  tasks: TaskEntity[];
+  @OneToMany(() => Task, task => task.user, { eager: true })
+  tasks: Task[];
 
-  @Column(() => TokenEntity)
-  confirmationToken?: TokenEntity = null;
+  @Column(() => Token)
+  confirmationToken?: Token = null;
 
   constructor(name: string, email: string, passwordHash: string) {
     super();
