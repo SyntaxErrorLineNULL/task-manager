@@ -7,18 +7,19 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from '../../application/repository/user.repository';
 import { SignUpSchema } from '../common/request/signUp.schema';
 import UserEntity from '../../application/entity/user.entity';
-import * as bcrypt from 'bcryptjs';
 import { TokenEntity } from '../../application/entity/token.entity';
+import { PasswordService } from './service/password.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserRepository)
-    private userRepository: UserRepository,
+    private readonly userRepository: UserRepository,
+    private readonly passwordService: PasswordService,
   ) {}
 
   public async create(schema: SignUpSchema, confirmationToken: TokenEntity): Promise<UserEntity> {
-    const user = new UserEntity(schema.name, schema.email, await bcrypt.hashSync(schema.password, 12));
+    const user = new UserEntity(schema.name, schema.email, await this.passwordService.hash(schema.password));
 
     user.confirmationToken = confirmationToken;
     return await this.userRepository.save(user);

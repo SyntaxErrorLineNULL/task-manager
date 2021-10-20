@@ -2,21 +2,14 @@
  * Author: SyntaxErrorLineNULL.
  */
 
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryColumn,
-  OneToMany,
-} from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryColumn, OneToMany } from 'typeorm';
 import { UserStatusEnum } from './user.status.enum';
 import { v4 as uuidv4 } from 'uuid';
 import { Role } from './role';
 import TaskEntity from './task.entity';
 import { TokenEntity } from './token.entity';
-import * as bcrypt from 'bcryptjs';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { PasswordService } from '../../modules/user/service/password.service';
 
 @Entity('user')
 export default class UserEntity extends BaseEntity {
@@ -48,7 +41,7 @@ export default class UserEntity extends BaseEntity {
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
 
-  @OneToMany(() => TaskEntity, (task) => task.user, { eager: true })
+  @OneToMany(() => TaskEntity, task => task.user, { eager: true })
   tasks: TaskEntity[];
 
   @Column(() => TokenEntity)
@@ -70,10 +63,8 @@ export default class UserEntity extends BaseEntity {
     this.confirmationToken.expires = null;
   }
 
-  public async validate(password: string): Promise<void> {
-    if ((await bcrypt.compareSync(password, this.passwordHash)) ||
-      this.status !== UserStatusEnum.STATUS_ACTIVE
-    ) {
+  public async validate(password: string, passwordService: PasswordService): Promise<void> {
+    if ((await passwordService.validate(password, this.passwordHash)) || this.status !== UserStatusEnum.STATUS_ACTIVE) {
       throw new HttpException(
         'Password is not correct. Maybe... . Check your inbox, you may not have noticed the message that your account has been blocked',
         HttpStatus.UNAUTHORIZED,
