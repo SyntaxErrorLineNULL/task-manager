@@ -6,7 +6,7 @@ import { Entity, Column, CreateDateColumn } from 'typeorm';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 @Entity('token')
-export class TokenEntity {
+export class Token {
   @Column({ type: 'varchar', nullable: true, default: null, unique: true })
   value?: string;
 
