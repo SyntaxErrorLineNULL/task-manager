@@ -9,11 +9,11 @@ import { SignInSchema } from '../common/request/signIn.schema';
 import { TokenSchema } from '../common/request/token.schema';
 import { jwtConfig } from '../../../config/jwt.config';
 import { JwtService } from '@nestjs/jwt';
-import UserEntity from '../../application/entity/user.entity';
-import { UserStatusEnum } from '../../application/entity/user.status.enum';
+import { User } from '../user/entity/user.entity';
+import { UserStatusEnum } from '../user/enum/user.status.enum';
 import { MailService } from '../../core/mail/mail.service';
 import { ConfirmationAuthenticationSchema } from '../common/request/confirmation.authentication.schema';
-import { TokenEntity } from '../../application/entity/token.entity';
+import { Token } from '../user/entity/token.entity';
 import { UserMapper } from '../common/mapper/user.mapper';
 import { UserDto } from '../common/dto/user.dto';
 
@@ -33,7 +33,7 @@ export class AuthService {
       throw new HttpException('This email is already in use', HttpStatus.FORBIDDEN);
     }
 
-    const token = new TokenEntity();
+    const token = new Token();
     token.value = Math.random().toString(36).substring(2, 9);
 
     user = await this.userService.create(schema, token);
@@ -61,7 +61,7 @@ export class AuthService {
    * @private
    * @param user
    */
-  private async generateJWTToken(user: UserEntity): Promise<TokenSchema> {
+  private async generateJWTToken(user: User): Promise<TokenSchema> {
     const payload = { userId: user.id };
     return new TokenSchema({
       expiresIn: jwtConfig.jwtExpirationTime,
