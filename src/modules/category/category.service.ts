@@ -4,8 +4,8 @@
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import CategoryRepository from '../../application/repository/category.repository';
-import CreateCategorySchema from '../common/request/create.category.schema';
+import CategoryRepository from './entity/category.repository';
+import { CreateCategorySchema } from '../common/request/create.category.schema';
 import { CategoryMapper } from '../common/mapper/category.mapper';
 import { CategoryDto } from '../common/dto/category.dto';
 import { CategoryCollection } from '../common/dto/category.collection';

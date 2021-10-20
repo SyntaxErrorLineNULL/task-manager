@@ -5,7 +5,7 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export default class CategoryEntity extends BaseEntity {
+export class Category extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

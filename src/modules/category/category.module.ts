@@ -5,8 +5,8 @@
 import { Module } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import CategoryRepository from '../../application/repository/category.repository';
-import { CategoryController } from './category.controller';
+import CategoryRepository from './entity/category.repository';
+import { CategoryController } from '../../api/controller/category.controller';
 import { CategoryMapper } from '../common/mapper/category.mapper';
 
 @Module({
