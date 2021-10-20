@@ -2,18 +2,9 @@
  * Author: SyntaxErrorLineNULL.
  */
 
-import {
-  BaseEntity,
-  BeforeInsert,
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  PrimaryColumn,
-} from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryColumn } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
-import CategoryEntity from './category.entity';
+import { Category } from '../../category/entity/category.entity';
 
 @Entity({ name: 'article' })
 export default class ArticleEntity extends BaseEntity {
@@ -35,9 +26,9 @@ export default class ArticleEntity extends BaseEntity {
   @CreateDateColumn({ type: 'timestamp', name: 'createAt' })
   createAt: Date;
 
-  @ManyToMany(() => CategoryEntity)
+  @ManyToMany(() => Category)
   @JoinTable()
-  categoryIds?: CategoryEntity[];
+  categoryIds?: Category[];
 
   @Column({ type: 'text' })
   coverId?: string;

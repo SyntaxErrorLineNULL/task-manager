@@ -3,7 +3,7 @@
  */
 
 import { Module } from '@nestjs/common';
-import { ArticleController } from './article.controller';
+import { ArticleController } from '../../api/controller/article.controller';
 import { ArticleService } from './article.service';
 
 @Module({
