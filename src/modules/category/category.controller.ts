@@ -16,7 +16,7 @@ export class CategoryController {
   public constructor(private service: CategoryService) {}
 
   @Post('create')
-  @ApiBody({ type: [CreateCategorySchema] })
+  @ApiBody({ type: CreateCategorySchema })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Create category',
@@ -62,10 +62,7 @@ export class CategoryController {
     required: true,
     schema: { oneOf: [{ type: 'string' }] },
   })
-  public async update(
-    @Body() body: CategoryUpdateSchema,
-    @Param('id') id: number,
-  ): Promise<CategoryDto> {
+  public async update(@Body() body: CategoryUpdateSchema, @Param('id') id: number): Promise<CategoryDto> {
     return await this.service.update(id, body);
   }
 

@@ -27,7 +27,7 @@ export class CategoryService {
 
   public async getAll(): Promise<CategoryCollection> {
     const cat = await this.categoryRepository.getAll();
-    const items = cat.map((cat) => this.categoryMapper.mapper(cat));
+    const items = cat.map(cat => this.categoryMapper.mapper(cat));
     return new CategoryCollection(items);
   }
 
