@@ -3,11 +3,11 @@
  */
 
 import { Body, Controller, Post, Get, Param, HttpStatus } from '@nestjs/common';
-import { CategoryService } from './category.service';
-import CreateCategorySchema from '../common/request/create.category.schema';
-import { CategoryDto } from '../common/dto/category.dto';
-import { CategoryCollection } from '../common/dto/category.collection';
-import { CategoryUpdateSchema } from '../common/request/category.update.schema';
+import { CategoryService } from '../../modules/category/category.service';
+import { CreateCategorySchema } from '../../modules/common/request/create.category.schema';
+import { CategoryDto } from '../../modules/common/dto/category.dto';
+import { CategoryCollection } from '../../modules/common/dto/category.collection';
+import { CategoryUpdateSchema } from '../../modules/common/request/category.update.schema';
 import { ApiBody, ApiTags, ApiResponse, ApiParam } from '@nestjs/swagger';
 
 @Controller('category')

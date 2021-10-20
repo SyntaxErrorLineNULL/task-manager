@@ -7,9 +7,9 @@ import { ApiTags, ApiConsumes, ApiBody } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from '../../../config/multer.service';
 
-@Controller('/api/image')
+@Controller('/api/file')
 @ApiTags('Image')
-export class ImageController {
+export class FileController {
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {

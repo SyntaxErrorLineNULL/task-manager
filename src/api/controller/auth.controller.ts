@@ -4,15 +4,15 @@
 
 import { Controller, Post, Body, Get, UseGuards, HttpStatus, Res } from '@nestjs/common';
 import { ApiBody, ApiTags, ApiResponse } from '@nestjs/swagger';
-import { AuthService } from './auth.service';
-import { SignUpSchema } from '../common/request/signUp.schema';
-import { SignInSchema } from '../common/request/signIn.schema';
-import { TokenSchema } from '../common/request/token.schema';
+import { AuthService } from '../../modules/auth/auth.service';
+import { SignUpSchema } from '../../modules/common/request/signUp.schema';
+import { SignInSchema } from '../../modules/common/request/signIn.schema';
+import { TokenSchema } from '../../modules/common/request/token.schema';
 import { JwtAuthGuard } from '../../core/guard/jwt-auth.guard';
-import { ConfirmationAuthenticationSchema } from '../common/request/confirmation.authentication.schema';
+import { ConfirmationAuthenticationSchema } from '../../modules/common/request/confirmation.authentication.schema';
 import { Response } from 'express';
 import { Authentication } from '../../core/decorator/user.decorator';
-import { UserDto } from '../common/dto/user.dto';
+import { UserDto } from '../../modules/common/dto/user.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')

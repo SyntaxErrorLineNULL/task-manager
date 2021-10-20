@@ -12,7 +12,7 @@ import { MailModule } from './core/mail/mail.module';
 import { DatabaseModule } from './core/database/database.module';
 import { LoggerModule } from './core/logger/logger.module';
 import { ArticleModule } from './modules/article/article.module';
-import { ImageModule } from './modules/image/image.module';
+import { FileModule } from './modules/file/file.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { multerOptions } from '../config/multer.service';
 
@@ -31,7 +31,7 @@ import { multerOptions } from '../config/multer.service';
     DatabaseModule,
     LoggerModule,
     ArticleModule,
-    ImageModule,
+    FileModule,
   ],
 })
 export class AppModule {}
