@@ -2,23 +2,14 @@
  * Author: SyntaxErrorLineNULL.
  */
 
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  PrimaryColumn,
-  ManyToOne,
-} from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryColumn, ManyToOne } from 'typeorm';
 import { TaskStatusEnum } from './task.status.enum';
 import { v4 as uuidv4 } from 'uuid';
-import UserEntity from './user.entity';
-import CategoryEntity from './category.entity';
+import { User } from '../../user/entity/user.entity';
+import { Category } from '../../category/entity/category.entity';
 
 @Entity()
-export default class TaskEntity extends BaseEntity {
+export class Task extends BaseEntity {
   @PrimaryColumn({ type: 'uuid' })
   id: string;
 
@@ -41,22 +32,22 @@ export default class TaskEntity extends BaseEntity {
   })
   status: TaskStatusEnum;
 
-  @ManyToMany(() => CategoryEntity)
+  @ManyToMany(() => Category)
   @JoinTable()
-  categoryIds?: CategoryEntity[];
+  categoryIds?: Category[];
 
-  @ManyToOne(() => UserEntity, (user) => user.tasks, {
+  @ManyToOne(() => User, user => user.tasks, {
     eager: false,
     nullable: true,
   })
-  user?: UserEntity | null;
+  user?: User;
 
   /**
    * @param title
    * @param description
    * @param user
    */
-  constructor(title: string, description: string, user?: UserEntity) {
+  constructor(title: string, description: string, user?: User) {
     super();
     this.id = uuidv4();
     this.title = title;

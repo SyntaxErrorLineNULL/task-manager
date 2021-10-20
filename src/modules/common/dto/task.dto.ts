@@ -3,7 +3,7 @@
  */
 
 import { ApiProperty } from '@nestjs/swagger';
-import { TaskStatusEnum } from '../../../application/entity/task.status.enum';
+import { TaskStatusEnum } from '../../task/entity/task.status.enum';
 import { CategoryDto } from './category.dto';
 import { UserDto } from './user.dto';
 
