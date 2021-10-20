@@ -20,7 +20,7 @@ export class TaskController {
 
   @Post('create')
   @UseGuards(JwtAuthGuard)
-  @ApiBody({ type: [CreateTaskSchema] })
+  @ApiBody({ type: CreateTaskSchema })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Create task',
@@ -77,7 +77,7 @@ export class TaskController {
 
   @Post('update/:id')
   @UseGuards(JwtAuthGuard)
-  @ApiBody({ type: [UpdateTaskSchema] })
+  @ApiBody({ type: UpdateTaskSchema })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Update task',
