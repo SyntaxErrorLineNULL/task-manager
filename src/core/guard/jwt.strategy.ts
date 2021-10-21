@@ -9,6 +9,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from '../../modules/auth/auth.service';
 import { PayloadJwt } from './interface/payload.jwt';
 import { UserDto } from '../../modules/common/dto/user.dto';
+import { User } from '../../modules/user/entity/user.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -20,7 +21,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  protected async validate(payload: PayloadJwt): Promise<UserDto> {
+  protected async validate(payload: PayloadJwt): Promise<User> {
     const timeDiff = payload.exp - payload.iat;
     const user = await this.service.validate(payload.userId);
 
