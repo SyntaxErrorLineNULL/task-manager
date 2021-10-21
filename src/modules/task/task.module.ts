@@ -11,9 +11,10 @@ import CategoryRepository from '../category/entity/category.repository';
 import { TaskMapper } from '../common/mapper/task.mapper';
 import { CategoryMapper } from '../common/mapper/category.mapper';
 import { UserMapper } from '../common/mapper/user.mapper';
+import { UserRepository } from '../user/entity/user.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TaskRepository, CategoryRepository])],
+  imports: [TypeOrmModule.forFeature([TaskRepository, CategoryRepository, UserRepository])],
   controllers: [TaskController],
   providers: [TaskService, TaskMapper, CategoryMapper, UserMapper],
 })

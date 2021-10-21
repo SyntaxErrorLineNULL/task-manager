@@ -5,6 +5,7 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Task } from './task.entity';
 import { NotFoundException } from '@nestjs/common';
+import { User } from '../../user/entity/user.entity';
 
 @EntityRepository(Task)
 export class TaskRepository extends Repository<Task> {
@@ -25,7 +26,7 @@ export class TaskRepository extends Repository<Task> {
   public async getTaskById(id: string): Promise<Task> {
     const task = await this.findOne({
       where: { id },
-      relations: ['user', 'categoryIds'],
+      relations: ['categoryIds'],
     });
     if (task === null) {
       throw new NotFoundException(`Task with ID "${id}" not found`);
@@ -36,7 +37,7 @@ export class TaskRepository extends Repository<Task> {
   public async getAllTask(): Promise<Task[]> {
     return await this.find({
       order: { id: 'DESC', title: 'ASC' },
-      relations: ['user', 'categoryIds'],
+      relations: ['categoryIds'],
     });
   }
 }

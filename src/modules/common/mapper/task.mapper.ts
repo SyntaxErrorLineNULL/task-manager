@@ -7,12 +7,18 @@ import { Injectable } from '@nestjs/common';
 import { CategoryMapper } from './category.mapper';
 import { UserMapper } from './user.mapper';
 import { Category } from '../../category/entity/category.entity';
+import { UserRepository } from '../../user/entity/user.repository';
 
 @Injectable()
 export class TaskMapper {
-  public constructor(private readonly categoryMapper: CategoryMapper, private readonly userMapper: UserMapper) {}
+  public constructor(
+    private readonly categoryMapper: CategoryMapper,
+    private readonly userMapper: UserMapper,
+    private readonly userRepository: UserRepository,
+  ) {}
 
-  public mapper(entity: Task): TaskDto {
+  public async mapper(entity: Task): Promise<TaskDto> {
+    const user = await this.userRepository.getUserById(entity.authorId);
     return new TaskDto(
       entity.id,
       entity.title,
@@ -21,7 +27,7 @@ export class TaskMapper {
       entity.finishAt ? entity.finishAt.toString() : null,
       entity.status,
       entity.categoryIds ? entity.categoryIds.map((cat: Category) => this.categoryMapper.mapper(cat)) : null,
-      entity.user ? this.userMapper.mapper(entity.user) : null,
+      this.userMapper.mapper(user),
     );
   }
 }

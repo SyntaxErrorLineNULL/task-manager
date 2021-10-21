@@ -69,12 +69,12 @@ export class AuthService {
     });
   }
 
-  public async validate(id: string): Promise<UserDto> {
+  public async validate(id: string): Promise<User> {
     const user = await this.userService.getById(id);
     if (!user || user.status !== UserStatusEnum.STATUS_ACTIVE) {
       throw new UnauthorizedException();
     }
 
-    return this.userMapper.mapper(user);
+    return user;
   }
 }

@@ -2,7 +2,7 @@
  * Author: SyntaxErrorLineNULL.
  */
 
-import { Body, Controller, Get, Param, Post, Delete, HttpStatus, UseGuards, Request } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Delete, HttpStatus, UseGuards } from '@nestjs/common';
 import { TaskService } from '../../modules/task/task.service';
 import { CreateTaskSchema } from '../../modules/common/request/create.task.schema';
 import { Task as TaskEntity } from '../../modules/task/entity/task.entity';
@@ -26,8 +26,9 @@ export class TaskController {
     description: 'Create task',
     type: TaskDto,
   })
-  public async createTask(@Body() body: CreateTaskSchema, @Request() req): Promise<TaskDto> {
-    return await this.taskService.createTask(body, req.user);
+  public async createTask(@Body() body: CreateTaskSchema, @Authentication() auth): Promise<TaskDto> {
+    console.log(auth);
+    return await this.taskService.createTask(body, auth);
   }
 
   @Get('tasks')
