@@ -36,23 +36,20 @@ export class Task extends BaseEntity {
   @JoinTable()
   categoryIds?: Category[];
 
-  @ManyToOne(() => User, user => user.tasks, {
-    eager: false,
-    nullable: true,
-  })
-  user?: User;
+  @Column({ type: 'uuid' })
+  authorId: string;
 
   /**
    * @param title
    * @param description
-   * @param user
+   * @param authorId
    */
-  constructor(title: string, description: string, user?: User) {
+  constructor(title: string, description: string, authorId: string) {
     super();
     this.id = uuidv4();
     this.title = title;
     this.description = description;
-    this.user = user;
+    this.authorId = authorId;
     this.createAt = new Date();
   }
 

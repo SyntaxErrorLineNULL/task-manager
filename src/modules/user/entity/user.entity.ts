@@ -41,9 +41,6 @@ export class User extends BaseEntity {
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
 
-  @OneToMany(() => Task, task => task.user, { eager: true })
-  tasks: Task[];
-
   @Column(() => Token)
   confirmationToken?: Token = null;
 

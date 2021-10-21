@@ -29,7 +29,7 @@ export class TaskService {
    * @param user
    */
   public async createTask(schema: CreateTaskSchema, user: User): Promise<TaskDto> {
-    const task = new Task(schema.title, schema.description, user);
+    const task = new Task(schema.title, schema.description, user.id);
     task.categoryIds = [];
 
     for (let i = 0; i < schema.categoryIds.length; i++) {
@@ -43,7 +43,7 @@ export class TaskService {
 
   public async getAll(): Promise<TaskCollection> {
     const tasks = await this.taskRepository.getAllTask();
-    const items = tasks.map(task => this.taskMapper.mapper(task));
+    const items = await Promise.all(tasks.map(task => this.taskMapper.mapper(task)));
     return new TaskCollection(items);
   }
 
@@ -84,7 +84,7 @@ export class TaskService {
    */
   private async owner(user: User, taskId: string): Promise<Task> {
     const task = await this.taskRepository.getTaskById(taskId);
-    if (task.user.id !== user.id) {
+    if (task.authorId !== user.id) {
       throw new NotFoundException('User is not owner this task');
     }
     return task;
