@@ -16,6 +16,7 @@ import { FileModule } from './modules/file/file.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { multerOptions } from '../config/multer.service';
 import { ChatModule } from './modules/chat/chat.module';
+import { AdminModule } from './modules/admin/admin.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ChatModule } from './modules/chat/chat.module';
     ArticleModule,
     FileModule,
     ChatModule,
+    AdminModule,
   ],
 })
 export class AppModule {}
