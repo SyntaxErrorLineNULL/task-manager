@@ -14,4 +14,10 @@ export class SubTask extends BaseEntity {
 
   @Column({ type: 'text' })
   content: string;
+
+  @Column()
+  createdAt: Date;
+
+  @Column()
+  finishAt?: Date;
 }
