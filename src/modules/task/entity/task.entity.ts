@@ -7,6 +7,7 @@ import { TaskStatusEnum } from './task.status.enum';
 import { v4 as uuidv4 } from 'uuid';
 import { User } from '../../user/entity/user.entity';
 import { Category } from '../../category/entity/category.entity';
+import { Board } from './board.entity';
 
 @Entity()
 export class Task extends BaseEntity {
@@ -38,6 +39,9 @@ export class Task extends BaseEntity {
 
   @Column({ type: 'uuid' })
   authorId: string;
+
+  @ManyToOne(() => Board, board => board.task)
+  board: Board;
 
   /**
    * @param title
