@@ -9,7 +9,7 @@ export class SubTask extends BaseEntity {
   @Column({ type: 'uuid' })
   id: string;
 
-  @Column({ type: 'uuid' })
+  @Column({ type: 'text' })
   parentTaskId: string;
 
   @Column({ type: 'text' })
