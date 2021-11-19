@@ -4,15 +4,15 @@
 
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TaskRepository } from './entity/task.repository';
-import { CreateTaskSchema } from '../common/request/create.task.schema';
-import { Task } from './entity/task.entity';
-import CategoryRepository from '../category/entity/category.repository';
-import { User } from '../user/entity/user.entity';
-import { TaskMapper } from '../common/mapper/task.mapper';
-import { TaskDto } from '../common/dto/task.dto';
-import { TaskCollection } from '../common/dto/task.collection';
-import { UpdateTaskSchema } from '../common/request/update.task.schema';
+import { TaskRepository } from '../entity/task.repository';
+import { CreateTaskSchema } from '../../common/request/create.task.schema';
+import { Task } from '../entity/task.entity';
+import CategoryRepository from '../../category/entity/category.repository';
+import { User } from '../../user/entity/user.entity';
+import { TaskMapper } from '../../common/mapper/task.mapper';
+import { TaskDto } from '../../common/dto/task.dto';
+import { TaskCollection } from '../../common/dto/task.collection';
+import { UpdateTaskSchema } from '../../common/request/update.task.schema';
 
 @Injectable()
 export class TaskService {
@@ -72,7 +72,8 @@ export class TaskService {
 
   public async update(taskId: string, schema: UpdateTaskSchema, user: User): Promise<TaskDto> {
     const task = await this.owner(user, taskId);
-    task.update(schema.title, schema.description);
+    task.title = schema.title;
+    task.description = schema.description;
     await this.taskRepository.save(task);
     return this.taskMapper.mapper(task);
   }
