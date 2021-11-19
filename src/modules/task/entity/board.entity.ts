@@ -2,8 +2,7 @@
  * Author: SyntaxErrorLineNULL.
  */
 
-import { BaseEntity, Column, Entity, OneToMany } from 'typeorm';
-import { Task } from './task.entity';
+import { BaseEntity, Column, Entity } from 'typeorm';
 
 @Entity()
 export class Board extends BaseEntity {
@@ -18,7 +17,4 @@ export class Board extends BaseEntity {
 
   @Column()
   imageId?: string;
-
-  @OneToMany(() => Task, task => task.board)
-  task: Task[];
 }
