@@ -3,9 +3,8 @@
  */
 
 import { EntityRepository, Repository } from 'typeorm';
-import { Task } from './task.entity';
+import { Task } from '../entity/task.entity';
 import { NotFoundException } from '@nestjs/common';
-import { User } from '../../user/entity/user.entity';
 
 @EntityRepository(Task)
 export class TaskRepository extends Repository<Task> {
@@ -14,7 +13,6 @@ export class TaskRepository extends Repository<Task> {
    */
   public async removeTask(id: string): Promise<void> {
     const task = await this.delete({ id });
-
     if (task.affected === 0) {
       throw new NotFoundException(`Task with ID "${id}" not found`);
     }
