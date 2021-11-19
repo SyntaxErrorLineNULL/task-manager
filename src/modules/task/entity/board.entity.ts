@@ -3,6 +3,7 @@
  */
 
 import { BaseEntity, Column, Entity } from 'typeorm';
+import { Visibility } from './visibility.enum';
 
 @Entity()
 export class Board extends BaseEntity {
@@ -17,4 +18,7 @@ export class Board extends BaseEntity {
 
   @Column()
   imageId?: string;
+
+  @Column({ type: 'enum', enum: Visibility, default: Visibility.VISIBILITY_PUBLIC })
+  visibility: Visibility;
 }

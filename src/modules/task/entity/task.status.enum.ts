@@ -2,7 +2,7 @@
  * Author: SyntaxErrorLineNULL.
  */
 
-export enum TaskStatusEnum {
+export enum TaskStatus {
   STATUS_DONE = 'TASK_DONE',
   STATUS_START = 'TASK_START',
 }

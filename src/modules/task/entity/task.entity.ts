@@ -3,7 +3,7 @@
  */
 
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryColumn } from 'typeorm';
-import { TaskStatusEnum } from './task.status.enum';
+import { TaskStatus } from './task.status.enum';
 import { Category } from '../../category/entity/category.entity';
 import { generateString } from '@nestjs/typeorm';
 
@@ -26,10 +26,10 @@ export class Task extends BaseEntity {
 
   @Column({
     type: 'enum',
-    enum: TaskStatusEnum,
-    default: TaskStatusEnum.STATUS_START,
+    enum: TaskStatus,
+    default: TaskStatus.STATUS_START,
   })
-  status: TaskStatusEnum;
+  status: TaskStatus;
 
   @ManyToMany(() => Category, { eager: true })
   @JoinTable()
@@ -57,6 +57,6 @@ export class Task extends BaseEntity {
 
   public doneTask(): void {
     this.finishAt = new Date();
-    this.status = TaskStatusEnum.STATUS_DONE;
+    this.status = TaskStatus.STATUS_DONE;
   }
 }
