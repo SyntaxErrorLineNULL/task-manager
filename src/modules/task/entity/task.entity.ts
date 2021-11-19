@@ -21,7 +21,7 @@ export class Task extends BaseEntity {
   @CreateDateColumn({ type: 'timestamp', name: 'createAt' })
   createAt: Date;
 
-  @Column({ type: 'timestamp without time zone', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   finishAt?: Date = null;
 
   @Column({
