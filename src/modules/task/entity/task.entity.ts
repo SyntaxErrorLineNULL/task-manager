@@ -31,7 +31,7 @@ export class Task extends BaseEntity {
   })
   status: TaskStatusEnum;
 
-  @ManyToMany(() => Category)
+  @ManyToMany(() => Category, { eager: true })
   @JoinTable()
   categoryIds?: Category[];
 
