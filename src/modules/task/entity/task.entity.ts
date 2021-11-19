@@ -2,12 +2,10 @@
  * Author: SyntaxErrorLineNULL.
  */
 
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryColumn, ManyToOne } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryColumn } from 'typeorm';
 import { TaskStatusEnum } from './task.status.enum';
-import { v4 as uuidv4 } from 'uuid';
-import { User } from '../../user/entity/user.entity';
 import { Category } from '../../category/entity/category.entity';
-import { Board } from './board.entity';
+import { generateString } from '@nestjs/typeorm';
 
 @Entity()
 export class Task extends BaseEntity {
@@ -40,8 +38,8 @@ export class Task extends BaseEntity {
   @Column({ type: 'uuid' })
   authorId: string;
 
-  @ManyToOne(() => Board, board => board.task)
-  board: Board;
+  @Column({ type: 'uuid' })
+  listId: string;
 
   /**
    * @param title
@@ -50,7 +48,7 @@ export class Task extends BaseEntity {
    */
   constructor(title: string, description: string, authorId: string) {
     super();
-    this.id = uuidv4();
+    this.id = generateString();
     this.title = title;
     this.description = description;
     this.authorId = authorId;
@@ -60,10 +58,5 @@ export class Task extends BaseEntity {
   public doneTask(): void {
     this.finishAt = new Date();
     this.status = TaskStatusEnum.STATUS_DONE;
-  }
-
-  public update(title?: string, description?: string): void {
-    this.title = title ?? this.title;
-    this.description = description ?? this.description;
   }
 }
