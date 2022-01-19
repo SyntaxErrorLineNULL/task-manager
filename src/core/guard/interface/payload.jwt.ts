@@ -3,7 +3,7 @@
  */
 
 export interface PayloadJwt {
-  readonly userId: string;
+  readonly id: string;
   readonly iat: number;
   readonly exp: number;
 }
