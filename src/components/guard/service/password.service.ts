@@ -9,8 +9,8 @@ import { Injectable } from '@nestjs/common';
 export class PasswordService {
   // TODO: refactoring password hash
   async hash(password: string): Promise<string> {
-    const salt = await bcrypt.salt(13);
-    return await bcrypt.hash(password, salt);
+    //const salt = await bcrypt.salt(13);
+    return await bcrypt.hash(password, 13);
   }
 
   async validate(password: string, passwordHash: string): Promise<boolean> {
