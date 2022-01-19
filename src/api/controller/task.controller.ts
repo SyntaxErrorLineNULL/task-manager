@@ -3,15 +3,15 @@
  */
 
 import { Body, Controller, Get, Param, Post, Delete, HttpStatus, UseGuards } from '@nestjs/common';
-import { TaskService } from '../../modules/task/task.service';
 import { CreateTaskSchema } from '../../modules/common/request/create.task.schema';
 import { Task as TaskEntity } from '../../modules/task/entity/task.entity';
 import { ApiBody, ApiTags, ApiResponse, ApiParam } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../../core/guard/jwt-auth.guard';
+import { JwtAuthGuard } from '../../components/guard/jwt/jwt-auth.guard';
 import { Authentication } from '../../core/decorator/user.decorator';
 import { TaskDto } from '../../modules/common/dto/task.dto';
 import { TaskCollection } from '../../modules/common/dto/task.collection';
 import { UpdateTaskSchema } from '../../modules/common/request/update.task.schema';
+import { TaskService } from '../../modules/task/service/task.service';
 
 @Controller('task')
 @ApiTags('task')

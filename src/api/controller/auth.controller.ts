@@ -8,7 +8,7 @@ import { AuthService } from '../../modules/auth/auth.service';
 import { SignUpSchema } from '../../modules/common/request/signUp.schema';
 import { SignInSchema } from '../../modules/common/request/signIn.schema';
 import { TokenSchema } from '../../modules/common/request/token.schema';
-import { JwtAuthGuard } from '../../core/guard/jwt-auth.guard';
+import { JwtAuthGuard } from '../../components/guard/jwt/jwt-auth.guard';
 import { ConfirmationAuthenticationSchema } from '../../modules/common/request/confirmation.authentication.schema';
 import { Response } from 'express';
 import { Authentication } from '../../core/decorator/user.decorator';

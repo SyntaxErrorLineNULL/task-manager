@@ -12,3 +12,8 @@ services:
     ports:
       - "44321:5432"
     restart: always
+  api-redis:
+    image: redis:alpine
+    container_name: redis-story
+    expose:
+      - 6379

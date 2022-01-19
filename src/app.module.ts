@@ -17,6 +17,8 @@ import { MulterModule } from '@nestjs/platform-express';
 import { multerOptions } from '../config/multer.service';
 import { ChatModule } from './modules/chat/chat.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { GuardModule } from './components/guard/guard.module';
+import { UserAuthModule } from './api/auth/user/user-auth.module';
 
 @Module({
   imports: [
@@ -28,7 +30,7 @@ import { AdminModule } from './modules/admin/admin.module';
     TaskModule,
     CategoryModule,
     UserModule,
-    AuthModule,
+    //AuthModule,
     MailModule,
     DatabaseModule,
     LoggerModule,
@@ -36,6 +38,8 @@ import { AdminModule } from './modules/admin/admin.module';
     FileModule,
     ChatModule,
     AdminModule,
+    /*GuardModule,
+    UserAuthModule,*/
   ],
 })
 export class AppModule {}

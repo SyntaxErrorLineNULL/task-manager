@@ -5,7 +5,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { swaggerSetup } from '../config/swagger-setup';
-import { AuthorizationExceptionHandler } from './components/authorization/authorization.exception-handler';
+import { AuthorizationExceptionHandler } from './components/guard/authorization.exception-handler';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

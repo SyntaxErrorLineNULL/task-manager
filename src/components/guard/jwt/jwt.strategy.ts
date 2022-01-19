@@ -4,16 +4,15 @@
 
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { jwtConfig } from '../../../config/jwt.config';
+import { jwtConfig } from '../../../../config/jwt.config';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthService } from '../../modules/auth/auth.service';
-import { PayloadJwt } from './interface/payload.jwt';
-import { UserDto } from '../../modules/common/dto/user.dto';
-import { User } from '../../modules/user/entity/user.entity';
+import { PayloadJwt } from '../../../core/guard/interface/payload.jwt';
+import { User } from '../../../modules/user/entity/user.entity';
+import { UserRepository } from '../../../modules/user/entity/user.repository';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor(private readonly service: AuthService) {
+  constructor(private userRepository: UserRepository) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: jwtConfig.secret,
@@ -22,14 +21,14 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   protected async validate(payload: PayloadJwt): Promise<User> {
+    console.log(payload);
     const timeDiff = payload.exp - payload.iat;
-    const user = await this.service.validate(payload.userId);
+    const user = await this.userRepository.getUserById(payload.id);
 
     if (timeDiff <= 0) {
       throw new UnauthorizedException();
     }
 
-    console.log(payload);
     return user;
   }
 }
