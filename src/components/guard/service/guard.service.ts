@@ -1,9 +1,9 @@
 /**
  * Author: SyntaxErrorLineNULL.
  */
+
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../../../modules/user/entity/user.entity';
 import { jwtConfig } from '../../../../config/jwt.config';
 import { GUARD_DATA_PROVIDER, GuardProvider } from '../provider/guard.provider';
 import { PasswordService } from './password.service';
