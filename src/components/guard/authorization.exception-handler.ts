@@ -4,7 +4,7 @@
 
 import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
-import { AuthorizationException } from './auth.exception';
+import { AuthorizationException } from '../exception/auth.exception';
 
 @Catch(AuthorizationException)
 export class AuthorizationExceptionHandler implements ExceptionFilter {
