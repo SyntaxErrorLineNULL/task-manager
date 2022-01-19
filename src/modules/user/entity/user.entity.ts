@@ -9,7 +9,7 @@ import { Role } from '../enum/role';
 import { Task } from '../../task/entity/task.entity';
 import { Token } from './token.entity';
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { PasswordService } from '../service/password.service';
+import { PasswordService } from '../../../components/guard/service/password.service';
 
 @Entity('user')
 export class User extends BaseEntity {

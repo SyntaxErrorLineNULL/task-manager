@@ -8,10 +8,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from './entity/user.repository';
 import { UserController } from '../../api/controller/user.controller';
 import { AuthModule } from '../auth/auth.module';
-import { PasswordService } from './service/password.service';
+import { PasswordService } from '../../components/guard/service/password.service';
 
 @Module({
-  imports: [forwardRef(() => AuthModule), TypeOrmModule.forFeature([UserRepository])],
+  imports: [TypeOrmModule.forFeature([UserRepository])],
   providers: [UserService, PasswordService],
   controllers: [UserController],
   exports: [UserService, PasswordService],

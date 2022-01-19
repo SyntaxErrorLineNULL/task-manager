@@ -5,7 +5,7 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { AdminRepository } from './entity/admin.repository';
 import { generateString } from '@nestjs/typeorm';
-import { PasswordService } from '../user/service/password.service';
+import { PasswordService } from '../../components/guard/service/password.service';
 
 @Injectable()
 export class AdminService implements OnApplicationBootstrap {

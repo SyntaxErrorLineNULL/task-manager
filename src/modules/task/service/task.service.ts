@@ -4,7 +4,6 @@
 
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TaskRepository } from '../entity/task.repository';
 import { CreateTaskSchema } from '../../common/request/create.task.schema';
 import { Task } from '../entity/task.entity';
 import CategoryRepository from '../../category/entity/category.repository';
@@ -13,6 +12,7 @@ import { TaskMapper } from '../../common/mapper/task.mapper';
 import { TaskDto } from '../../common/dto/task.dto';
 import { TaskCollection } from '../../common/dto/task.collection';
 import { UpdateTaskSchema } from '../../common/request/update.task.schema';
+import { TaskRepository } from '../repository/task.repository';
 
 @Injectable()
 export class TaskService {
