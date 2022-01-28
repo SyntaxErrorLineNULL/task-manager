@@ -1,8 +1,22 @@
 version: '3.8'
 
 services:
+  nats:
+    image: nats
+    command: "--cluster_name NATS --cluster nats://0.0.0.0:6123 --http_port 8222 "
+  nats-1:
+    image: nats
+    command: "--cluster_name NATS --cluster nats://0.0.0.0:6123 --routes=nats://nats:6123"
+    depends_on: [ "nats" ]
+  nats-2:
+    image: nats
+    command: "--cluster_name NATS --cluster nats://0.0.0.0:6123 --routes=nats://nats:6123"
+    depends_on: [ "nats" ]
   api-postgres:
-    image: postgres:13.1-alpine
+    image: postgres:14.0-alpine
+    shm_size: 256M
+    restart: always
+    container_name: 'api-postgres'
     environment:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: secret
@@ -11,7 +25,6 @@ services:
       - ./postgres-data:/var/lib/postgresql/data
     ports:
       - "44321:5432"
-    restart: always
   api-redis:
     image: redis:alpine
     container_name: redis-story
