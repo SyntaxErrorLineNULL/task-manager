@@ -6,7 +6,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { jwtConfig } from '../../../../config/jwt.config';
 import { Injectable } from '@nestjs/common';
-import { PayloadJwt } from '../../../core/guard/interface/payload.jwt';
+import { PayloadJwt } from './payload.jwt';
 import { User } from '../../../modules/user/entity/user.entity';
 import { UserRepository } from '../../../modules/user/entity/user.repository';
 import { AuthorizationException } from '../../exception/auth.exception';
