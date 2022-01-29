@@ -5,10 +5,11 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { jwtConfig } from '../../../../config/jwt.config';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PayloadJwt } from '../../../core/guard/interface/payload.jwt';
 import { User } from '../../../modules/user/entity/user.entity';
 import { UserRepository } from '../../../modules/user/entity/user.repository';
+import { AuthorizationException } from '../../exception/auth.exception';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -23,10 +24,10 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   protected async validate(payload: PayloadJwt): Promise<User> {
     console.log(payload);
     const timeDiff = payload.exp - payload.iat;
-    const user = await this.userRepository.getUserById(payload.id);
+    const user = await this.userRepository.findOne(payload.id);
 
-    if (timeDiff <= 0) {
-      throw new UnauthorizedException();
+    if (timeDiff <= 0 || !user) {
+      throw AuthorizationException.wrongAuthorizationValidate();
     }
 
     return user;
