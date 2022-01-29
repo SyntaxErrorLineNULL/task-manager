@@ -25,8 +25,47 @@ services:
       - ./postgres-data:/var/lib/postgresql/data
     ports:
       - "44321:5432"
-  api-redis:
-    image: redis:alpine
-    container_name: redis-story
-    expose:
-      - 6379
+  redis1:
+    image: redis:5
+    container_name: 'redis1'
+    restart: always
+    entrypoint:
+      - redis-server
+      - --maxclients 65535
+      - --appendonly no
+      - --daemonize no
+      - --cluster-enabled yes
+      - --cluster-require-full-coverage no
+  redis2:
+    image: redis:5
+    container_name: 'redis2'
+    restart: always
+    entrypoint:
+      - redis-server
+      - --maxclients 65535
+      - --appendonly no
+      - --daemonize no
+      - --cluster-enabled yes
+      - --cluster-node-timeout 5000
+      - --cluster-require-full-coverage no
+  redis3:
+    image: redis:5
+    container_name: 'redis3'
+    restart: always
+    entrypoint:
+      - redis-server
+      - --maxclients 65535
+      - --appendonly no
+      - --daemonize no
+      - --cluster-enabled yes
+      - --cluster-node-timeout 5000
+      - --cluster-require-full-coverage no
+  redismk:
+    image: redis:5
+    container_name: 'redismk'
+    restart: 'no'
+    depends_on:
+      - redis1
+      - redis2
+      - redis3
+    command: "bash -c \"echo yes | redis-cli --cluster create `getent hosts redis1 | awk '{print $$1}'`:6379 `getent hosts redis2 | awk '{print $$1}'`:6379 `getent hosts redis3 | awk '{print $$1}'`:6379\""
