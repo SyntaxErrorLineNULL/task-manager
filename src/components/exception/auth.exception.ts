@@ -8,6 +8,10 @@ export class AuthorizationException extends Error {
   }
 
   public static wrongRegistration(): AuthorizationException {
-    return new AuthorizationException('');
+    return new AuthorizationException('Your email is already in use. Or your account blocked');
+  }
+
+  public static wrongAuthorizationValidate(): AuthorizationException {
+    return new AuthorizationException('Time your session is over');
   }
 }
