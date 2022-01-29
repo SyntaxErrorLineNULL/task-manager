@@ -3,12 +3,11 @@
  */
 
 import { Module } from '@nestjs/common';
-import { FileController } from '../../api/controller/file.controller';
 import { FileService } from './file.service';
 
 @Module({
   imports: [],
-  controllers: [FileController],
+  controllers: [],
   exports: [FileService],
   providers: [FileService],
 })
