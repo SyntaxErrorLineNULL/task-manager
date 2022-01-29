@@ -2,14 +2,12 @@
  * Author: SyntaxErrorLineNULL.
  */
 
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryColumn, OneToMany } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
 import { UserStatusEnum } from '../enum/user.status.enum';
-import { v4 as uuidv4 } from 'uuid';
 import { Role } from '../enum/role';
-import { Task } from '../../task/entity/task.entity';
 import { Token } from './token.entity';
-import { HttpException, HttpStatus } from '@nestjs/common';
 import { PasswordService } from '../../../components/guard/service/password.service';
+import { AuthorizationException } from '../../../components/exception/auth.exception';
 
 @Entity('user')
 export class User extends BaseEntity {
@@ -28,9 +26,6 @@ export class User extends BaseEntity {
   @CreateDateColumn({ type: 'timestamp', name: 'createdAt' })
   createAt: Date;
 
-  @Column({ default: 0 })
-  countTaskComplete: number;
-
   @Column({
     type: 'enum',
     enum: UserStatusEnum,
@@ -44,15 +39,6 @@ export class User extends BaseEntity {
   @Column(() => Token)
   confirmationToken?: Token = null;
 
-  constructor(name: string, email: string, passwordHash: string) {
-    super();
-    this.id = uuidv4();
-    this.name = name;
-    this.email = email;
-    this.passwordHash = passwordHash;
-    this.createAt = new Date();
-  }
-
   public confirmationRegistration(date: Date): void {
     this.confirmationToken.validate(date);
     this.status = UserStatusEnum.STATUS_ACTIVE;
@@ -62,10 +48,7 @@ export class User extends BaseEntity {
 
   public async validate(password: string, passwordService: PasswordService): Promise<void> {
     if ((await passwordService.validate(password, this.passwordHash)) || this.status !== UserStatusEnum.STATUS_ACTIVE) {
-      throw new HttpException(
-        'Password is not correct. Maybe... . Check your inbox, you may not have noticed the message that your account has been blocked',
-        HttpStatus.UNAUTHORIZED,
-      );
+      throw AuthorizationException.wrongConfirmationValidate();
     }
   }
 }
