@@ -3,12 +3,14 @@
  */
 
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { generateString, InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './entity/user.repository';
 import { SignUpSchema } from '../common/request/signUp.schema';
 import { User } from './entity/user.entity';
 import { Token } from './entity/token.entity';
 import { PasswordService } from '../../components/guard/service/password.service';
+import { UserStatusEnum } from './enum/user.status.enum';
+import { Role } from './enum/role';
 
 @Injectable()
 export class UserService implements OnApplicationBootstrap {
@@ -18,19 +20,33 @@ export class UserService implements OnApplicationBootstrap {
     private readonly passwordService: PasswordService,
   ) {}
 
-  async onApplicationBootstrap() {
+  public async onApplicationBootstrap() {
     let user = await this.userRepository.findOne({ where: { email: 'cyberorange16@gmail.com' } });
     if (!user) {
-      user = new User('Alex', 'cyberorange16@gmail.com', await this.passwordService.hash('12345'));
+      user = this.userRepository.create({
+        id: generateString(),
+        name: 'Alex',
+        email: 'cyberorange16@gmail.com',
+        passwordHash: await this.passwordService.hash('12345'),
+        createAt: new Date(),
+        status: UserStatusEnum.STATUS_ACTIVE,
+        role: Role.OWNER,
+      });
       await this.userRepository.create(user);
       console.log('user install');
     }
   }
 
   public async create(schema: SignUpSchema, confirmationToken: Token): Promise<User> {
-    const user = new User(schema.name, schema.email, await this.passwordService.hash(schema.password));
-
-    user.confirmationToken = confirmationToken;
+    const user = this.userRepository.create({
+      id: generateString(),
+      name: schema.name,
+      email: schema.email,
+      passwordHash: await this.passwordService.hash(schema.password),
+      createAt: new Date(),
+      role: Role.USER,
+      confirmationToken: confirmationToken,
+    });
     return await this.userRepository.save(user);
   }
 
@@ -40,10 +56,6 @@ export class UserService implements OnApplicationBootstrap {
 
   public async getAll(): Promise<User[]> {
     return await this.userRepository.getAllUser();
-  }
-
-  public async getById(id: string): Promise<User> {
-    return this.userRepository.findOne({ where: { id } });
   }
 
   public async confirmationToken(token: string): Promise<void> {
