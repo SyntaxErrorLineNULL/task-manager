@@ -32,7 +32,7 @@ export class UserService implements OnApplicationBootstrap {
         status: UserStatusEnum.STATUS_ACTIVE,
         role: Role.OWNER,
       });
-      await this.userRepository.create(user);
+      await this.userRepository.save(user);
       console.log('user install');
     }
   }

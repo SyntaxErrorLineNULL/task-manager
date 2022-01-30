@@ -16,6 +16,8 @@ export class AuthorizationException extends Error {
   }
 
   public static wrongConfirmationValidate(): AuthorizationException {
-    return new AuthorizationException('Password is not correct. Maybe... . Check your inbox, you may not have noticed the message that your account has been blocked');
+    return new AuthorizationException(
+      'Password is not correct. Maybe... . Check your inbox, you may not have noticed the message that your account has been blocked',
+    );
   }
 }
