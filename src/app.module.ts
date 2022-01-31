@@ -11,6 +11,7 @@ import { LoggerModule } from './core/logger/logger.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { multerOptions } from '../config/multer.service';
 import { AdminModule } from './modules/admin/admin.module';
+import { UserAuthModule } from './api/auth/user/user-auth.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AdminModule } from './modules/admin/admin.module';
     DatabaseModule,
     LoggerModule,
     AdminModule,
+    UserAuthModule,
   ],
 })
 export class AppModule {}
