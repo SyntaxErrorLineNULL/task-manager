@@ -2,7 +2,14 @@
  * Author: SyntaxErrorLineNULL.
  */
 
-export const redisMain = {
+import { RedisOptions } from 'ioredis';
+
+export const redisOptions: RedisOptions = {
+  host: '127.0.0.1',
+  port: 6379,
+};
+
+export const redisMainCluster = {
   modules: [
     {
       host: 'redis1',
