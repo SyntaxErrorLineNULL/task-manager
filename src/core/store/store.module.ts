@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { DatabaseService } from './database.service';
+import { StoreService } from './store.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigTypeormService } from '../../../config/config-typeorm.service';
+import { RedisService } from './redis.service';
 
 @Module({
   imports: [
@@ -9,6 +10,6 @@ import { ConfigTypeormService } from '../../../config/config-typeorm.service';
       useClass: ConfigTypeormService,
     }),
   ],
-  providers: [DatabaseService],
+  providers: [StoreService, RedisService],
 })
-export class DatabaseModule {}
+export class StoreModule {}
