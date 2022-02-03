@@ -23,7 +23,7 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar' })
   passwordHash: string;
 
-  @CreateDateColumn({ type: 'timestamp', name: 'createdAt' })
+  @CreateDateColumn({ type: 'timestamp', name: 'createdAt', default: () => 'DATE_ADD(CURRENT_TIMESTAMP)' })
   createAt: Date;
 
   @Column({
@@ -36,15 +36,12 @@ export class User extends BaseEntity {
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
 
-  @Column(() => Token)
-  confirmationToken?: Token = null;
-
-  public confirmationRegistration(date: Date): void {
+  /*public confirmationRegistration(date: Date): void {
     this.confirmationToken.validate(date);
     this.status = UserStatusEnum.STATUS_ACTIVE;
     this.confirmationToken.value = null;
     this.confirmationToken.expires = null;
-  }
+  }*/
 
   public async validate(password: string, passwordService: PasswordService): Promise<void> {
     if ((await passwordService.validate(password, this.passwordHash)) || this.status !== UserStatusEnum.STATUS_ACTIVE) {

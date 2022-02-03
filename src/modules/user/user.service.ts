@@ -7,7 +7,6 @@ import { generateString, InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './entity/user.repository';
 import { SignUpSchema } from '../common/request/signUp.schema';
 import { User } from './entity/user.entity';
-import { Token } from './entity/token.entity';
 import { PasswordService } from '../../components/guard/service/password.service';
 import { UserStatusEnum } from './enum/user.status.enum';
 import { Role } from './enum/role';
@@ -37,19 +36,6 @@ export class UserService implements OnApplicationBootstrap {
     }
   }
 
-  public async create(schema: SignUpSchema, confirmationToken: Token): Promise<User> {
-    const user = this.userRepository.create({
-      id: generateString(),
-      name: schema.name,
-      email: schema.email,
-      passwordHash: await this.passwordService.hash(schema.password),
-      createAt: new Date(),
-      role: Role.USER,
-      confirmationToken: confirmationToken,
-    });
-    return await this.userRepository.save(user);
-  }
-
   public async findByEmail(email: string): Promise<User> {
     return this.userRepository.findByEmail(email);
   }
@@ -58,9 +44,9 @@ export class UserService implements OnApplicationBootstrap {
     return await this.userRepository.getAllUser();
   }
 
-  public async confirmationToken(token: string): Promise<void> {
+  /*public async confirmationToken(token: string): Promise<void> {
     const user = await this.userRepository.getByToken(token);
     user.confirmationRegistration(new Date());
     await this.userRepository.save(user);
-  }
+  }*/
 }
