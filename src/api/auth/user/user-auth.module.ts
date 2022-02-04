@@ -12,6 +12,8 @@ import { GuardAsyncRegistrationModule } from '../../../components/guard/guard.as
 import { GuardService } from '../../../components/guard/service/guard.service';
 import { PasswordService } from '../../../components/guard/service/password.service';
 import { RedisService } from '../../../core/store/redis-service';
+import { UserAuthService } from './user-auth.service';
+import { MailService } from '../../../core/mail/mail.service';
 
 @Module({
   imports: [
@@ -23,12 +25,22 @@ import { RedisService } from '../../../core/store/redis-service';
     PasswordService,
     UserGuardProvider,
     RedisService,
+    UserAuthService,
+    MailService,
     {
       provide: GUARD_DATA_PROVIDER,
       useClass: UserGuardProvider,
     },
   ],
   controllers: [UserAuthController],
-  exports: [GUARD_DATA_PROVIDER, GuardAsyncRegistrationModule, GuardService, PasswordService, RedisService],
+  exports: [
+    GUARD_DATA_PROVIDER,
+    GuardAsyncRegistrationModule,
+    GuardService,
+    PasswordService,
+    RedisService,
+    UserAuthService,
+    MailService,
+  ],
 })
 export class UserAuthModule {}

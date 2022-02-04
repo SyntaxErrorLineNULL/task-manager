@@ -32,9 +32,14 @@ export class UserAuthController {
       name: body.name,
       email: body.email,
       passwordHash: await this.passwordService.hash(body.password),
-      createAt: new Date(),
     });
     await this.userRepository.save(user);
+    const date = new Date();
+    const token = {
+      email: 'email@thiss.com',
+      expires: date.setHours(date.getHours() + 2),
+    };
+    await this.redis.redisClient.set('123456', JSON.stringify(token));
   }
 
   @Post('sign-in')
