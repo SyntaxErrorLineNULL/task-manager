@@ -15,9 +15,7 @@ export class AuthorizationException extends Error {
     return new AuthorizationException('Time your session is over');
   }
 
-  public static wrongConfirmationValidate(): AuthorizationException {
-    return new AuthorizationException(
-      'Password is not correct. Maybe... . Check your inbox, you may not have noticed the message that your account has been blocked',
-    );
+  public static wrongCompletionConfirmation(): AuthorizationException {
+    return new AuthorizationException('Your token is not valid!');
   }
 }
