@@ -5,7 +5,6 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
 import { UserStatusEnum } from '../enum/user.status.enum';
 import { Role } from '../enum/role';
-import { Token } from './token.entity';
 import { PasswordService } from '../../../components/guard/service/password.service';
 import { AuthorizationException } from '../../../components/exception/auth.exception';
 
@@ -49,7 +48,7 @@ export class User extends BaseEntity {
 
   public async validate(password: string, passwordService: PasswordService): Promise<void> {
     if ((await passwordService.validate(password, this.passwordHash)) || this.status !== UserStatusEnum.STATUS_ACTIVE) {
-      throw AuthorizationException.wrongConfirmationValidate();
+      throw AuthorizationException.wrongAuthorizationValidate();
     }
   }
 }
