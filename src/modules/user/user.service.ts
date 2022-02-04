@@ -10,6 +10,7 @@ import { User } from './entity/user.entity';
 import { PasswordService } from '../../components/guard/service/password.service';
 import { UserStatusEnum } from './enum/user.status.enum';
 import { Role } from './enum/role';
+import { SignUpDto } from '../../api/auth/dto/sign-up.dto';
 
 @Injectable()
 export class UserService implements OnApplicationBootstrap {
@@ -34,6 +35,16 @@ export class UserService implements OnApplicationBootstrap {
       await this.userRepository.save(user);
       console.log('user install');
     }
+  }
+
+  public async createUser(schema: SignUpDto) {
+    const user = await this.userRepository.create({
+      id: generateString(),
+      name: schema.name,
+      email: schema.email,
+      passwordHash: await this.passwordService.hash(schema.password),
+    });
+    await this.userRepository.save(user);
   }
 
   public async findByEmail(email: string): Promise<User> {
