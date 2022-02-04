@@ -43,6 +43,10 @@ export class User extends BaseEntity {
     this.confirmationToken.expires = null;
   }*/
 
+  public changeStatus(status: UserStatusEnum): void {
+    this.status = status;
+  }
+
   public async validate(password: string, passwordService: PasswordService): Promise<void> {
     if ((await passwordService.validate(password, this.passwordHash)) || this.status !== UserStatusEnum.STATUS_ACTIVE) {
       throw AuthorizationException.wrongConfirmationValidate();
