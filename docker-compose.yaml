@@ -1,8 +1,22 @@
 version: '3.8'
 
 services:
+  nats:
+    image: nats
+    command: "--cluster_name NATS --cluster nats://0.0.0.0:6123 --http_port 8222 "
+  nats-1:
+    image: nats
+    command: "--cluster_name NATS --cluster nats://0.0.0.0:6123 --routes=nats://nats:6123"
+    depends_on: [ "nats" ]
+  nats-2:
+    image: nats
+    command: "--cluster_name NATS --cluster nats://0.0.0.0:6123 --routes=nats://nats:6123"
+    depends_on: [ "nats" ]
   api-postgres:
-    image: postgres:13.1-alpine
+    image: postgres:14.0-alpine
+    shm_size: 256M
+    restart: always
+    container_name: 'api-postgres'
     environment:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: secret
@@ -11,9 +25,47 @@ services:
       - ./postgres-data:/var/lib/postgresql/data
     ports:
       - "44321:5432"
+  redis1:
+    image: redis:5
+    container_name: 'redis1'
     restart: always
-  api-redis:
-    image: redis:alpine
-    container_name: redis-story
-    expose:
-      - 6379
+    entrypoint:
+      - redis-server
+      - --maxclients 65535
+      - --appendonly no
+      - --daemonize no
+      - --cluster-enabled yes
+      - --cluster-require-full-coverage no
+  redis2:
+    image: redis:5
+    container_name: 'redis2'
+    restart: always
+    entrypoint:
+      - redis-server
+      - --maxclients 65535
+      - --appendonly no
+      - --daemonize no
+      - --cluster-enabled yes
+      - --cluster-node-timeout 5000
+      - --cluster-require-full-coverage no
+  redis3:
+    image: redis:5
+    container_name: 'redis3'
+    restart: always
+    entrypoint:
+      - redis-server
+      - --maxclients 65535
+      - --appendonly no
+      - --daemonize no
+      - --cluster-enabled yes
+      - --cluster-node-timeout 5000
+      - --cluster-require-full-coverage no
+  redismk:
+    image: redis:5
+    container_name: 'redismk'
+    restart: 'no'
+    depends_on:
+      - redis1
+      - redis2
+      - redis3
+    command: "bash -c \"echo yes | redis-cli --cluster create `getent hosts redis1 | awk '{print $$1}'`:6379 `getent hosts redis2 | awk '{print $$1}'`:6379 `getent hosts redis3 | awk '{print $$1}'`:6379\""

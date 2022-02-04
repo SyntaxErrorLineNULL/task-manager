@@ -19,9 +19,6 @@ export class UserDto {
   @ApiProperty({ type: 'timestamp' })
   createAt: string;
 
-  @ApiProperty()
-  countTaskComplete: number;
-
   @ApiProperty({ enum: UserStatusEnum })
   status: string;
 
@@ -33,24 +30,14 @@ export class UserDto {
    * @param name
    * @param email
    * @param createAt
-   * @param countTaskComplete
    * @param status
    * @param role
    */
-  public constructor(
-    userId: string,
-    name: string,
-    email: string,
-    createAt: string,
-    countTaskComplete: number,
-    status: string,
-    role: string,
-  ) {
+  public constructor(userId: string, name: string, email: string, createAt: string, status: string, role: string) {
     this.userId = userId;
     this.name = name;
     this.email = email;
     this.createAt = createAt;
-    this.countTaskComplete = countTaskComplete;
     this.status = status;
     this.role = role;
   }
