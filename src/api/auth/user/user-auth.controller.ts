@@ -26,7 +26,7 @@ export class UserAuthController {
   ) {}
 
   @Post('sign-up')
-  public async signUp(@Body() body: SignUpDto) {
+  public async signUp(@Body() body: SignUpDto): Promise<void> {
     if (await this.userRepository.findOne({ email: body.email })) {
       throw AuthorizationException.wrongRegistration();
     }
@@ -35,12 +35,12 @@ export class UserAuthController {
   }
 
   @Post('confirmation')
-  public async completionConfirmation(@Body() body: ConfirmationDto) {
+  public async completionConfirmation(@Body() body: ConfirmationDto): Promise<void> {
     await this.tokenService.completionConfirmation(body.token);
   }
 
   @Post('sign-in')
-  public async login(@Body() body: SignInDto): Promise<any> {
+  public async login(@Body() body: SignInDto): Promise<{ accessToken: string; expiresIn: number }> {
     return await this.guardService.login(body.email, body.password);
   }
 }
