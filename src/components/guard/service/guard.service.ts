@@ -17,7 +17,7 @@ export class GuardService {
     private jwtService: JwtService,
   ) {}
 
-  public async login(email: string, password: string) {
+  public async login(email: string, password: string): Promise<{ accessToken: string; expiresIn: number }> {
     const user = await this.guardProvider.provideByEmail(email);
     if (!user) throw AuthorizationException.wrongSignIn();
     const passwordValid = await this.passwordService.validate(password, user.passwordHash);
