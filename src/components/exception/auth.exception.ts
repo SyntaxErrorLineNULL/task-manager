@@ -18,4 +18,8 @@ export class AuthorizationException extends Error {
   public static wrongCompletionConfirmation(): AuthorizationException {
     return new AuthorizationException('Your token is not valid!');
   }
+
+  public static wrongBlockedUser(): AuthorizationException {
+    return new AuthorizationException('Your account is blocked');
+  }
 }
