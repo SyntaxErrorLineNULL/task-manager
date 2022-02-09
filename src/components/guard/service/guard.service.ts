@@ -22,8 +22,7 @@ export class GuardService {
     if (!user) throw AuthorizationException.wrongSignIn();
     const passwordValid = await this.passwordService.validate(password, user.passwordHash);
     if (!passwordValid) throw AuthorizationException.wrongSignIn();
-
-    return await this.signIn(await this.guardProvider.provideJWTToken(user.id));
+    return await this.signIn(await this.guardProvider.provideJWTToken(user.id, user.roles[0]));
   }
 
   private async signIn(data: any): Promise<{ accessToken: string; expiresIn: number }> {
