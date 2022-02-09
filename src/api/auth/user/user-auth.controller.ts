@@ -12,7 +12,7 @@ import { SignUpDto } from '../dto/sign-up.dto';
 import { PasswordService } from '../../../components/guard/service/password.service';
 import { TokenService } from '../../../components/guard/service/token.service';
 import { UserService } from '../../../modules/user/user.service';
-import { CompletionConfirmationDto } from '../dto/completion-confirmation.dto';
+import { ConfirmationDto } from '../dto/confirmation.dto';
 
 @Controller('api/user/auth')
 export class UserAuthController {
@@ -35,7 +35,7 @@ export class UserAuthController {
   }
 
   @Post('confirmation')
-  public async completionConfirmation(@Body() body: CompletionConfirmationDto) {
+  public async completionConfirmation(@Body() body: ConfirmationDto) {
     await this.tokenService.completionConfirmation(body.token);
   }
 
