@@ -17,9 +17,6 @@ export class MailService {
         template: view,
         context: html,
       })
-      .then(success => {
-        console.log(success);
-      })
       .catch(error => {
         console.log(error);
       });
