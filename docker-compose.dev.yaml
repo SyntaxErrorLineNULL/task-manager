@@ -26,3 +26,11 @@ services:
       - "8081:8081"
     depends_on:
       - api-redis
+  nats:
+    container_name: test-nats
+    image: nats
+    ports:
+      - "8222:8222"
+      - "4222:4222"
+      - "6222:6222"
+    restart: always
