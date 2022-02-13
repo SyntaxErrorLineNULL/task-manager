@@ -27,8 +27,8 @@
     "@nestjs/platform-express": "^8.0.0",
     "cache-manager": "^3.6.0",
     "cache-manager-redis-store": "^2.0.0",
+    "ioredis": "^4.28.5",
     "nats": "^2.6.0",
-    "redis": "^4.0.3",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
