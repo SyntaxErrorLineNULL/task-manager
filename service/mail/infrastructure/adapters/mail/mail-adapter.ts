@@ -9,10 +9,10 @@ import Mail from 'nodemailer/lib/mailer';
 import { CustomSendMailOptions } from './interface/custom-send-mail-options';
 
 @Injectable()
-export abstract class MailAdapter {
+export class MailAdapter {
   private readonly transporter: Transporter;
 
-  protected constructor(@Inject(MAIL_OPTIONS) private mailOptions: MailOptions) {
+  constructor(@Inject(MAIL_OPTIONS) private mailOptions: MailOptions) {
     if (!mailOptions.transport || Object.keys(mailOptions.transport).length <= 0)
       throw new Error('Transport configuration is not found');
 
