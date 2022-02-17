@@ -4,19 +4,13 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import { MAIL_OPTIONS, MailOptions } from './interface/mail.options';
-import { createTransport, Transporter } from 'nodemailer';
-import * as SMTPTransport from 'nodemailer/lib/smtp-transport';
-import * as SMTPPool from 'nodemailer/lib/smtp-pool';
-import * as SendmailTransport from 'nodemailer/lib/sendmail-transport';
-import * as StreamTransport from 'nodemailer/lib/stream-transport';
+import { createTransport, SentMessageInfo, Transporter } from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
-import { options } from 'tsconfig-paths/lib/options';
-
-export type TransportType = SMTPTransport | SMTPPool | SendmailTransport | StreamTransport | string;
+import { CustomSendMailOptions } from './interface/custom-send-mail-options';
 
 @Injectable()
-export class MailAdapter {
-  private transporter: Transporter;
+export abstract class MailAdapter {
+  private readonly transporter: Transporter;
 
   protected constructor(@Inject(MAIL_OPTIONS) private mailOptions: MailOptions) {
     if (!mailOptions.transport || Object.keys(mailOptions.transport).length <= 0)
@@ -29,5 +23,10 @@ export class MailAdapter {
     return createTransport(options.transport, options.defaults);
   }
 
-  public async sendMail(options: MailOptions) {}
+  public async sendMail(options: CustomSendMailOptions): Promise<SentMessageInfo> {
+    if (this.transporter) {
+      return this.transporter.sendMail(options);
+    }
+    throw new ReferenceError('Transporter object undefined');
+  }
 }
