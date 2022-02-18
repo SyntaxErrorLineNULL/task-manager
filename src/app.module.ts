@@ -16,7 +16,7 @@ import { StoreModule } from './core/store/store.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.env.dev',
+      envFilePath: '.env.dev.dev',
       isGlobal: true,
     }),
     MulterModule.register(multerOptions),

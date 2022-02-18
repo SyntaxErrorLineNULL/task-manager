@@ -2,11 +2,16 @@ import { Module } from '@nestjs/common';
 import { MailController } from './mail.controller';
 import { MailService } from './mail.service';
 import { MailAdapter } from '../infrastructure/adapters/mail/mail-adapter';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { HandlebarsAdapter } from '../infrastructure/adapters/template/handlebars.adapter';
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env.dev.dev',
+      isGlobal: true,
+    }),
+  ],
   controllers: [MailController],
   providers: [
     MailService,
