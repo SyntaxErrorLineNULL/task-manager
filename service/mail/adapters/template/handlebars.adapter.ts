@@ -6,6 +6,7 @@ import { HelperDeclareSpec } from 'handlebars';
 import handlebars from 'handlebars';
 import path from 'path';
 import { get } from 'lodash';
+import glob from 'glob';
 import fs from 'fs';
 import { MailOptions } from '../mail/interface/mail.options';
 
@@ -22,9 +23,12 @@ export class HandlebarsAdapter {
     handlebars.registerHelper(option || {});
   }
 
-  public compileTemplate(mail: any, callback: any, mailerOptions: MailOptions) {
-    const { templateName } = this.precompile(mail.data.template, callback, mailerOptions.template);
+  public compileTemplate(mail: any, callback: any, mailerOptions: MailOptions): void {
+    this.precompile(mail.data.template, callback, mailerOptions.template);
     const templateOptions = get(mailerOptions, 'options', { functional: false, data: {} });
+    if (templateOptions.functional) {
+      this.getFiles(templateOptions);
+    }
   }
 
   private precompile(
@@ -50,5 +54,13 @@ export class HandlebarsAdapter {
     }
 
     return { templateExt, templateName, templateDir, templatePath };
+  }
+
+  private getFiles(options: any) {
+    const files = glob.sync(path.join(options.functional.dir, '*.hbs'));
+    files.forEach(file => {
+      const { templateName, templatePath } = this.precompile(file, () => {}, options.functional);
+      handlebars.registerPartial(templateName, fs.readFileSync(templatePath, 'utf-8'));
+    });
   }
 }
