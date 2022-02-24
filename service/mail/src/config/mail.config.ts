@@ -4,7 +4,7 @@
 
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { ConfigService } from '@nestjs/config';
-import { MailOptions } from '../../infrastructure/adapters/mail/interface/mail.options';
+import { MailOptions } from '../../adapters/mail/interface/mail.options';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
