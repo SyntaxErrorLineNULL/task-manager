@@ -14,6 +14,7 @@ import { HandlebarsAdapter } from '../adapters/template/handlebars.adapter';
   ],
   controllers: [MailController],
   providers: [
+    MailAdapter,
     MailService,
     {
       provide: MailAdapter,
@@ -31,16 +32,17 @@ import { HandlebarsAdapter } from '../adapters/template/handlebars.adapter';
           defaults: {
             from: 'type16@gmail.com',
           },
-          template: {
+          /*template: {
             dir: process.cwd() + '/template/mail',
             adapter: new HandlebarsAdapter(),
             options: {
               strict: true,
             },
-          },
+          },*/
         }),
       inject: [ConfigService],
     },
   ],
+  exports: [MailService],
 })
 export class MailModule {}
