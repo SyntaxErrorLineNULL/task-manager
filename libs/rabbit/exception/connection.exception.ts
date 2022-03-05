@@ -3,8 +3,11 @@
  */
 
 export class ConnectionException extends Error {
-  constructor() {
-    super();
-    this.message = 'Connection Refused';
+  public static wrongValidate(): ConnectionException {
+    return new ConnectionException('URL does not valid');
+  }
+
+  public static wrongConnection(message: string): ConnectionException {
+    return new ConnectionException(message);
   }
 }
