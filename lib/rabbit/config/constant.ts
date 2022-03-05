@@ -3,9 +3,7 @@
  */
 
 export enum Keys {
-  SEND_SMS = 'notify.sendSms',
-  SEND_TO_DELIVERY = 'integrates.delivery',
-  HOLD = 'hold',
+  SEND_EMAIL = 'notify.sendEmail',
 }
 
 export enum Types {
