@@ -1,28 +1,31 @@
 'use strict'
 
-const path = require('path')
-const AutoLoad = require('@fastify/autoload')
+import path from 'node:path'
+import AutoLoad from '@fastify/autoload'
+import Sensible from '@fastify/sensible'
+import { join } from 'desm'
 
-// Pass --options via CLI arguments in command to enable these options.
-module.exports.options = {}
+export default async function (fastify, opts) {
 
-module.exports = async function (fastify, opts) {
-  // Place here your custom code!
-
-  // Do not touch the following lines
+  // Fastify is an extremely lightweight framework, it does very little for you.
+  // Every feature you might need, such as cookies or database coonnectors
+  // is provided by external plugins.
+  // See the list of recognized plugins  by the core team! https://www.fastify.io/ecosystem/
+  // `fastify-sensible` adds many  small utilities, such as nice http errors.
+  await fastify.register(Sensible)
 
   // This loads all plugins defined in plugins
   // those should be support plugins that are reused
   // through your application
   fastify.register(AutoLoad, {
-    dir: path.join(__dirname, 'plugins'),
+    dir: join(import.meta.url, 'plugins'),
     options: Object.assign({}, opts)
   })
 
   // This loads all plugins defined in routes
   // define your routes in one of these
   fastify.register(AutoLoad, {
-    dir: path.join(__dirname, 'routes'),
+    dir: join(import.meta.url, 'routes'),
     options: Object.assign({}, opts)
   })
 }
