@@ -8,7 +8,10 @@
   },
   "type": "module",
   "scripts": {
-    "test": "jest",
+    "test:coverage": "tap -J test-tap/*.test.js --cov --coverage-report=lcovonly",
+    "test:jest": "jest --config=jest.config.json",
+    "test:tap": "tap",
+    "test:unit": "npm run test:jest && npm run test:tap",
     "start": "fastify start -l info app.js",
     "dev": "fastify start -w -l info -P app.js"
   },
@@ -30,6 +33,7 @@
   },
   "devDependencies": {
     "jest": "^29.3.1",
-    "tap": "^16.1.0"
+    "tap": "^16.1.0",
+    "pino-pretty": "^7.6.1"
   }
 }
