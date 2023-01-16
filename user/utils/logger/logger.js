@@ -1,79 +1,60 @@
 'use strict';
 
-import { LoggerService } from './logger.service.js';
-import { Pino } from 'pino'
-import { LOGGER_LEVELS } from "./levels.js";
+/*
+ * logger wrapper
+ *
+ * (c) SyntaxErrorLineNULL
+ */
 
 export class Logger {
     /**
-     * @param { Pino } _logger
+     * @param _logger
      * @private
      */
-    _logger;
+    #logger;
 
     /**
-     * @param { LoggerConfig } _config
-     * @private
-     */
-    _config;
-
-    /**
-     * @param { LoggerConfig } config
-     * @param { Pino } logger
+     * @param logger
      * @constructor
      */
-    constructor(config, logger) {
-        this._config = config;
-        this._logger = logger;
+    constructor(logger) {
+        this.#logger = logger;
     }
-
-    /**
-     * A map of levels
-     */
-    /*public get loadLevels(): Pino.LevelMapping {
-        if (!this.config.enabled) {
-            return STATIC_LEVELS
-        }
-        return this.pino.levels
-    }*/
 
     /**
      * @param { string } level
-     * @param { * } mergingObject
      * @param { string } message
      * @param { Array } values
      */
-    _log(level, mergingObject, message, ...values) {
+    #log(level, message, ...values) {
         if (values.length) {
-            this._logger[level](mergingObject, message, ...values)
+            this.#logger[level](message, ...values)
         } else if (message) {
-            this._logger[level](mergingObject, message)
-        } else {
-            this._logger[level](mergingObject)
+            this.#logger[level](message)
         }
     }
 
-    trace(mergingObject, message, ...values) {
-        this._log('trace', mergingObject, message, ...values)
+    trace(message, ...values) {
+        this.#log('trace', message, ...values)
     }
 
-    debug(mergingObject, message, ...values) {
-        this._log('debug', mergingObject, message, ...values)
+    debug(message, ...values) {
+        this.#log('debug', message, ...values)
     }
 
-    info(mergingObject, message, ...values) {
-        this._log('info', mergingObject, message, ...values)
+    info(message, ...values) {
+        this.#log('info', message, ...values)
     }
 
-    warn(mergingObject, message, ...values) {
-        this._log('warn', mergingObject, message, ...values)
+    warn(message, ...values) {
+        this.#log('warn', message, ...values)
     }
 
-    error(mergingObject, message, ...values) {
-        this._log('error', mergingObject, message, ...values)
+    error(message, ...values) {
+        this.#log('error', message, ...values)
     }
 
     fatal(mergingObject, message, ...values) {
-        this._log('fatal', mergingObject, message, ...values)
+        this.#log('fatal', message, ...values)
     }
 }
