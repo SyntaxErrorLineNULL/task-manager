@@ -13,5 +13,12 @@ import { AsyncLocalStorage } from 'async_hooks';
  * @class AsynchronousLocalStorage
  */
 export class AsynchronousLocalStorage {
-
+  /**
+   * @param {AsynchronousLocalStorage} asyncLocaleStorage
+   * @private
+   */
+  #asyncLocaleStorage;
+  constructor () {
+    this.#asyncLocaleStorage = new AsyncLocalStorage();
+  }
 }
