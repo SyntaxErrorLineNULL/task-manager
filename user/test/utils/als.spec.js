@@ -9,4 +9,17 @@ describe('async local storage', () => {
       expect(als.get('key')).toBeUndefined();
     });
   });
+
+  describe('if defaults are used when running a storage', () => {
+    it('then the get returns the correct information use math random', (fn) => {
+      const rand = Math.random();
+      als.initStorage(
+        { random: rand },
+        () => {
+          expect(als.get('random')).toBe(rand);
+          fn();
+        }
+      );
+    });
+  });
 });
