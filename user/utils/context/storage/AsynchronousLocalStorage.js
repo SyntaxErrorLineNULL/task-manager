@@ -59,4 +59,14 @@ export class AsynchronousLocalStorage {
   create (context) {
     this.#asyncLocaleStorage.enterWith({ context });
   }
+
+  /**
+   * @description Set data in storage.
+   * @param { string } key
+   * @param { string } value
+   */
+  set (key, value) {
+    const store = this.#asyncLocaleStorage.getStore();
+    store?.set(key, value);
+  }
 }
