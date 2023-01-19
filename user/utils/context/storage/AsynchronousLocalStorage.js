@@ -51,4 +51,12 @@ export class AsynchronousLocalStorage {
     return store?.get(key);
   }
 
+  /**
+   * @description Set the current execution data in storage.
+   * @link https://nodejs.org/api/async_context.html#asynclocalstorageenterwithstore
+   * @param { Object } context
+   */
+  create (context) {
+    this.#asyncLocaleStorage.enterWith({ context });
+  }
 }
