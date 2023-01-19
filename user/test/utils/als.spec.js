@@ -22,4 +22,15 @@ describe('async local storage', () => {
       );
     });
   });
+
+  describe('if set is called within context', () => {
+    it('then the get returns the correct information', (fn) => {
+      als.initStorage(
+        { key: 'value' },
+        () => {
+          expect(als.get('key')).toBe('value');
+          fn();
+        });
+    });
+  });
 });
