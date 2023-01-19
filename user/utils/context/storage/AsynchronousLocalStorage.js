@@ -40,4 +40,15 @@ export class AsynchronousLocalStorage {
     });
   }
 
+  /**
+   * Get the current execution data from storage.
+   * @link https://nodejs.org/api/async_context.html#asynclocalstoragegetstore
+   * @param { string } key
+   * @returns { ( Object | undefined ) }
+   */
+  get (key) {
+    const store = this.#asyncLocaleStorage.getStore();
+    return store?.get(key);
+  }
+
 }
