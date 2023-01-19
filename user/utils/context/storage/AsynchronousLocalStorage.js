@@ -35,7 +35,7 @@ export class AsynchronousLocalStorage {
   async initStorage (context, callback) {
     const store = context ? new Map(Object.entries(context)) : new Map();
 
-    this.#asyncLocaleStorage.run(store, () => {
+    await this.#asyncLocaleStorage.run(store, () => {
       callback();
     });
   }
@@ -68,5 +68,14 @@ export class AsynchronousLocalStorage {
   set (key, value) {
     const store = this.#asyncLocaleStorage.getStore();
     store?.set(key, value);
+  }
+
+  /**
+   * @description return all storage data.
+   * @link https://nodejs.org/dist/latest/docs/api/async_context.html#asynclocalstoragegetstore
+   * @returns {*}
+   */
+  all () {
+    return this.#asyncLocaleStorage.getStore();
   }
 }
