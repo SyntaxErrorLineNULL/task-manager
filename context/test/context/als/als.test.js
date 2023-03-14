@@ -1,5 +1,5 @@
 const AsynchronousLocalStorage = require('../../../lib/als/als.js')
-const { describe, it, expect } = require('@jest/globals');
+const { describe, it, expect, beforeEach } = require('@jest/globals');
 
 describe('async local storage simple test', () => {
     const als = new AsynchronousLocalStorage();
@@ -36,3 +36,10 @@ describe('async local storage simple test', () => {
     });
 });
 
+describe('AsynchronousLocalStorage', () => {
+    let asyncLocalStorage;
+
+    beforeEach(() => {
+        asyncLocalStorage = new AsynchronousLocalStorage();
+    });
+})
