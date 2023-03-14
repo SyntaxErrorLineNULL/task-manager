@@ -1,12 +1,13 @@
 'use strict';
 
-import { AsyncLocalStorage } from 'async_hooks';
+const { AsyncLocalStorage } = require('node:async_hooks');
+const { isValueEmpty } = require('../utils/utils')
 
 /**
  * @export
  * @class AsynchronousLocalStorage
  */
-export class AsynchronousLocalStorage {
+class AsynchronousLocalStorage {
     /**
      * @param { AsyncLocalStorage } asyncLocaleStorage
      * @private
@@ -23,14 +24,13 @@ export class AsynchronousLocalStorage {
      * The optional args are passed to the callback function.
      * @link https://nodejs.org/api/async_context.html#asynclocalstoragerunstore-callback-args
      * @param { Object } context
-     * @param { callback } callback
+     * @param { Function } fn
      * @returns { * }
      */
-    async initStorage (context, callback) {
+    async initStorage (context, fn) {
         const store = context ? new Map(Object.entries(context)) : new Map();
-
         await this.#asyncLocaleStorage.run(store, () => {
-            callback();
+            fn();
         });
     }
 
@@ -41,6 +41,9 @@ export class AsynchronousLocalStorage {
      * @returns { ( Object | undefined ) }
      */
     get (key) {
+        if (isValueEmpty(key)) {
+            throw new Error('key is empty')
+        }
         const store = this.#asyncLocaleStorage.getStore();
         return store?.get(key);
     }
@@ -51,15 +54,24 @@ export class AsynchronousLocalStorage {
      * @param { Object } context
      */
     create (context) {
+        if (isValueEmpty(context)) {
+            throw new Error('Context is empty')
+        }
         this.#asyncLocaleStorage.enterWith({ context });
     }
 
     /**
      * @description Set data in storage.
      * @param { string } key
-     * @param { string } value
+     * @param { string|number } value
      */
     set (key, value) {
+        if (isValueEmpty(key)) {
+            throw new Error('Key is empty')
+        }
+        if (isValueEmpty(value)) {
+            throw new Error('Value is empty')
+        }
         const store = this.#asyncLocaleStorage.getStore();
         store?.set(key, value);
     }
@@ -73,3 +85,5 @@ export class AsynchronousLocalStorage {
         return this.#asyncLocaleStorage.getStore();
     }
 }
+
+module.exports = AsynchronousLocalStorage;
