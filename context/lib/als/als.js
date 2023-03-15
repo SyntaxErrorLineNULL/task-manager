@@ -27,12 +27,17 @@ class AsynchronousLocalStorage {
      * @param { Function } fn
      * @returns { * }
      */
-    async initStorage (context, fn) {
-        const store = context ? new Map(Object.entries(context)) : new Map();
-        await this.#asyncLocaleStorage.run(store, () => {
+    initStorage (context, fn) {
+        const store = context instanceof Map ? context : new Map(Object.entries(context));
+        this.#asyncLocaleStorage.run(store, () => {
             fn();
         });
     }
+    run (callback) {
+        return this.#asyncLocaleStorage.run({}, callback);
+    }
+
+
 
     /**
      * Get the current execution data from storage.
@@ -45,7 +50,9 @@ class AsynchronousLocalStorage {
             throw new Error('key is empty')
         }
         const store = this.#asyncLocaleStorage.getStore();
-        return store?.get(key);
+        if (!store) return undefined;
+
+        return store.get(key);
     }
 
     /**
@@ -73,13 +80,13 @@ class AsynchronousLocalStorage {
             throw new Error('Value is empty')
         }
         const store = this.#asyncLocaleStorage.getStore();
-        store?.set(key, value);
+        store.set(key, value);
     }
 
     /**
      * @description return all storage data.
      * @link https://nodejs.org/dist/latest/docs/api/async_context.html#asynclocalstoragegetstore
-     * @returns {*}
+     * @returns { undefined }
      */
     all () {
         return this.#asyncLocaleStorage.getStore();
