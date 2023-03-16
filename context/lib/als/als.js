@@ -13,7 +13,22 @@ class AsynchronousLocalStorage {
      * @private
      */
     #asyncLocaleStorage;
-    constructor () {
+
+    /**
+     * @description
+     * @param {Map|Object} #defStorage;
+     * @private
+     */
+    #defStorage;
+
+    /**
+     * @description
+     * @param {Map|Object|null}  defStorage
+     */
+    constructor (defStorage) {
+        if (defStorage === null) {
+            this.#defStorage = new Map();
+        }
         this.#asyncLocaleStorage = new AsyncLocalStorage();
     }
 
@@ -33,11 +48,9 @@ class AsynchronousLocalStorage {
             fn();
         });
     }
-    run (callback) {
-        return this.#asyncLocaleStorage.run({}, callback);
+    initSimpleStorage (callback) {
+        return this.#asyncLocaleStorage.run(this.#defStorage, callback());
     }
-
-
 
     /**
      * Get the current execution data from storage.
@@ -52,7 +65,7 @@ class AsynchronousLocalStorage {
         const store = this.#asyncLocaleStorage.getStore();
         if (!store) return undefined;
 
-        return store.get(key);
+        return store?.get(key);
     }
 
     /**
@@ -72,15 +85,25 @@ class AsynchronousLocalStorage {
      * @param { string } key
      * @param { string|number } value
      */
-    set (key, value) {
+    async set (key, value) {
         if (isValueEmpty(key)) {
             throw new Error('Key is empty')
         }
         if (isValueEmpty(value)) {
             throw new Error('Value is empty')
         }
-        const store = this.#asyncLocaleStorage.getStore();
-        store.set(key, value);
+
+        let store = this.#asyncLocaleStorage.getStore();
+        if (!store) {
+            store = new Map();
+            this.#asyncLocaleStorage.run(store);
+        }
+
+        if (store instanceof Map) {
+            store.set(key, value);
+        } else if (typeof store === 'object') {
+            store[key] = value;
+        }
     }
 
     /**
