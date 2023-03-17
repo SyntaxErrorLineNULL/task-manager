@@ -67,10 +67,10 @@ describe('AsynchronousLocalStorage', () => {
             expect(result).toEqual('bar');
         });
 
-        it('should return undefined if key does not exist', async () => {
+        it('should return throw [Storage doesn\'t exist] if key does not exist', async () => {
             asyncLocalStorage.create({});
-            const result = await asyncLocalStorage?.get('foo');
-            await expect(result).rejects.toThrowError("Context data is empty");
+            const result = asyncLocalStorage.get('foo');
+            await expect(result).rejects.toThrowError("Storage doesn't exist");
         });
     });
 
