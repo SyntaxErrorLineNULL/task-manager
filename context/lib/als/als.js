@@ -58,14 +58,23 @@ class AsynchronousLocalStorage {
      * @param { string } key
      * @returns { ( Object | undefined ) }
      */
-    get (key) {
+     async get (key) {
         if (isValueEmpty(key)) {
             throw new Error('key is empty')
         }
-        const store = this.#asyncLocaleStorage.getStore();
-        if (!store) return undefined;
 
-        return store?.get(key);
+        const store = this.#asyncLocaleStorage.getStore();
+        if (store === undefined) {
+            throw new Error("Storage doesn't exist")
+        }
+        if (Object.keys(store).length === 0 || store.length === 0) {
+            throw new Error('Storage is empty')
+        }
+
+        if (store instanceof Map) {
+            return store.get(key);
+        }
+        return store[key];
     }
 
     /**
@@ -73,11 +82,16 @@ class AsynchronousLocalStorage {
      * @link https://nodejs.org/api/async_context.html#asynclocalstorageenterwithstore
      * @param { Object } context
      */
-    create (context) {
+    async create (context) {
         if (isValueEmpty(context)) {
-            throw new Error('Context is empty')
+            throw new Error('Context data is empty')
         }
-        this.#asyncLocaleStorage.enterWith({ context });
+
+        if (this.#defStorage instanceof Map) {
+            this.#asyncLocaleStorage.enterWith(new Map(Object.entries(context)));
+        }
+
+        this.#asyncLocaleStorage.enterWith(context);
     }
 
     /**
@@ -95,24 +109,24 @@ class AsynchronousLocalStorage {
 
         let store = this.#asyncLocaleStorage.getStore();
         if (!store) {
-            store = new Map();
+            store = this.#defStorage;
             this.#asyncLocaleStorage.run(store);
         }
 
         if (store instanceof Map) {
             store.set(key, value);
-        } else if (typeof store === 'object') {
-            store[key] = value;
         }
+        store[key] = value;
     }
 
     /**
      * @description return all storage data.
      * @link https://nodejs.org/dist/latest/docs/api/async_context.html#asynclocalstoragegetstore
-     * @returns { undefined }
+     * @returns { Map|Object|undefined }
      */
     all () {
-        return this.#asyncLocaleStorage.getStore();
+        const store = this.#asyncLocaleStorage.getStore();
+        return store === undefined ? {} : store;
     }
 }
 
