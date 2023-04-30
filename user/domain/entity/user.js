@@ -1,5 +1,7 @@
 'use strict';
 
+import { re } from "@babel/core/lib/vendor/import-meta-resolve.js";
+
 export class User {
     ID;
 
@@ -31,5 +33,17 @@ export class User {
 
     get UserName() {
         return this.UserName;
+    }
+
+    set UserName(username) {
+        this.UserName = username;
+    }
+
+    get Password() {
+        return this.#password;
+    }
+
+    set Password(passwordHash) {
+        this.#password = passwordHash;
     }
 }
