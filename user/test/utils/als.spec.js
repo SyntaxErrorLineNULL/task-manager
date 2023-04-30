@@ -10,6 +10,7 @@ describe('async local storage', () => {
     });
   });
 
+
   describe('if defaults are used when running a storage', () => {
     it('then the get returns the correct information use math random', (fn) => {
       const rand = Math.random();

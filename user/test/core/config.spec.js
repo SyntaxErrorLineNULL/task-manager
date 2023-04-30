@@ -1,9 +1,9 @@
 import { Config } from '../../core/config.js';
 import path from 'node:path';
-import { describe, expect, it, test } from '@jest/globals';
+import { describe, expect, it } from '@jest/globals';
 
 describe('test config loader', () => {
-  describe('', () => {
+  describe('correct data', () => {
     it('', () => {
       const filePath = path.resolve(process.cwd(), './.env.test');
       const config = new Config(filePath);
@@ -14,6 +14,6 @@ describe('test config loader', () => {
       expect(config.getParameter('SINGLE_QUOTES_SPACED')).toBe('    single quotes    ');
       expect(config.getParameter('DOUBLE_QUOTES')).toBe('double_quotes');
       expect(config.getParameter('DOUBLE_QUOTES_SPACED')).toBe('    double quotes    ');
-    })
-  })
+    });
+  });
 });

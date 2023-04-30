@@ -31,3 +31,11 @@ lerna-debug.log*
 # env
 !.env.dev
 /.env.dev
+
+/tst
+/logger
+/message-queue
+/pipeline
+/docker
+/config
+/context
