@@ -1,7 +1,5 @@
 'use strict';
 
-import { re } from "@babel/core/lib/vendor/import-meta-resolve.js";
-
 export class User {
     ID;
 
@@ -13,37 +11,16 @@ export class User {
 
     LastName
 
-    #password;
+    Password;
 
     CreateDate;
 
-    constructor() {}
-
-    get ID() {
-        return this.ID;
-    }
-
-    get Email() {
-        return this.Email;
-    }
-
-    set Email(email) {
+    constructor(id, email, username, firstName, lastName, password) {
+        this.ID = id;
         this.Email = email;
-    }
-
-    get UserName() {
-        return this.UserName;
-    }
-
-    set UserName(username) {
         this.UserName = username;
-    }
-
-    get Password() {
-        return this.#password;
-    }
-
-    set Password(passwordHash) {
-        this.#password = passwordHash;
+        this.FirstName = firstName;
+        this.LastName = lastName;
+        this.Password = password;
     }
 }
