@@ -13,7 +13,7 @@ export class User {
 
     Password;
 
-    CreateDate;
+    CreatedAt;
 
     constructor(id, email, username, firstName, lastName, password) {
         this.ID = id;
