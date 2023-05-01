@@ -1,16 +1,26 @@
 'use strict';
 
+import { knex } from 'knex';
+import { User } from '../entity/user';
+import { re } from "@babel/core/lib/vendor/import-meta-resolve.js";
+
 /**
  * @description ErrEmpty returns when request was with empty data
  * @type {Error}
  */
-const ErrEmpty = new Error('empty user data')
+const ErrEmpty = new Error('empty user data');
 
 /**
  * @description ErrInternal returns when something went wrong in repository
  * @type {Error}
  */
-const ErrInternal = new Error('internal error')
+const ErrInternal = new Error('internal error');
+
+/**
+ * @description ErrNotFound returns when user not in database
+ * @type {Error}
+ */
+const ErrNotFound = new Error("user not found")
 
 export class UserRepository {
     /**
@@ -60,12 +70,33 @@ export class UserRepository {
 
     /**
      *
-     * @param { User } user
+     * @param { string } query
      * @returns {Promise<User>|Error}
      * @constructor
      */
-    async Find(user) {
+    async Find(query) {
+        this.#logger.Info('Create new user');
+        if (query === '') {
+            this.#logger.Error('user is null', { duration: Date.now() });
+            throw ErrEmpty;
+        }
 
+        try {
+            const command = `SELECT * FROM "user" WHERE id = ? OR email = ? OR username = ?`;
+            /**
+             * @param { User } user
+             */
+            const [user] = await this.#database.raw(command, [query])
+            if (user === null || user === undefined) {
+                this.#logger.Error('user not found in database', { duration: Date.now() });
+                throw ErrNotFound;
+            }
+
+            return user;
+        } catch (err) {
+            this.#logger.Error('find user error', { duration: Date.now(), error: err.message });
+            throw ErrInternal;
+        }
     }
 
     /**
@@ -84,8 +115,21 @@ export class UserRepository {
     async CheckExists(query) {}
 
     #createTable() {
-        this.#database.schema.createTableIfNotExists('user', (tableBuilder) => {
+        this.#logger.Info('create index')
+        this.#database.hasTable('user').then((exists) => {
+            if (!exists) {
+                this.#database.schema.createTableIfNotExists('users', (tableBuilder) => {
+                    tableBuilder.uuid('id', { useBinaryUuid: true, primaryKey: true });
+                    tableBuilder.string('email', 128);
+                    tableBuilder.string('username', 64)
+                    tableBuilder.string('first_name', 64);
+                    tableBuilder.string('last_name', 64);
+                    tableBuilder.text('password', 'longtext');
+                    tableBuilder.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
 
-        })
+                    tableBuilder.unique(['email', 'username'])
+                });
+            }
+        });
     }
 }
