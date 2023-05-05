@@ -1,5 +1,7 @@
 'use strict';
 
+import { LoggerAdapter } from "./LoggerAdapter.js";
+
 /**
  * MIT License
  *
@@ -19,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-export class Logger {
+export class PinoLoggerAdapter extends LoggerAdapter {
     /**
      * @param _logger
      * @private
@@ -31,6 +33,7 @@ export class Logger {
      * @constructor
      */
     constructor(logger) {
+        super();
         this.#logger = logger;
     }
 
