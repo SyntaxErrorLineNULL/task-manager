@@ -13,5 +13,10 @@ describe('Mutex', () => {
     mutex.release();
     expect(mutex.isLocked()).toBe(false);
   });
+
+  it('throw error if unlocking unlocked mutex', () => {
+    const mutex = new Mutex();
+    expect(() => mutex.release()).toThrowError('Mutex is not locked');
+  });
 });
 
