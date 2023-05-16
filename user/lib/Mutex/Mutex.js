@@ -8,6 +8,8 @@ export class Mutex {
     this.#locked = false;
     this.#queue = [];
   }
+
+  lock() {}
 }
 
 
