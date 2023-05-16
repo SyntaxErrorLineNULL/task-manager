@@ -25,5 +25,13 @@ export class Mutex {
     if (!this.#locked) {
       throw new Error('Mutex is not locked');
     }
+
+    this.#locked = false;
+
+    while (this.#queue !== 0) {
+      const next = this.#queue.shift();
+      this.#locked = true;
+      next();
+    }
   }
 }
