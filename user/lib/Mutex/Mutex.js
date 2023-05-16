@@ -21,5 +21,9 @@ export class Mutex {
     });
   }
 
-  UnLock() {}
+  UnLock() {
+    if (!this.#locked) {
+      throw new Error('Mutex is not locked');
+    }
+  }
 }
