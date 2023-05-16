@@ -4,12 +4,20 @@ export class Mutex {
   #locked;
 
   #queue;
+
   constructor () {
     this.#locked = false;
     this.#queue = [];
   }
 
-  lock() {}
+  Lock() {
+    return new Promise((resolve) => {
+      if (!this.#locked) {
+        this.#locked = true
+        resolve();
+      } else {
+        this.#queue.push(resolve);
+      }
+    });
+  }
 }
-
-
