@@ -18,7 +18,7 @@ const ErrTimeOutExecution = new Error('Function execution timed out');
  */
 export class SingleFlight {
   /**
-   * @param {import('async-mutex').Mutex} #mutex
+   * @param {import('../Mutex/Mutex')} #mutex
    * @description The use of Mutex in this solution prevents race conditions by ensuring that only one
    * request is executing for a given key at any given time. If multiple requests are made for the same key,
    * they are queued and executed one at a time when the previous request has finished.
