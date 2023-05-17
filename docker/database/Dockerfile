@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM alpine:3.17
+FROM alpine:latest
 
 # 70 is the standard uid/gid for "postgres" in Alpine
 # https://git.alpinelinux.org/aports/tree/main/postgresql/postgresql.pre-install?h=3.12-stable
@@ -39,7 +39,7 @@ RUN set -eux; \
 	; \
 	rm postgresql.tar.bz2; \
 	\
-	apk add --no-cache --virtual .build-deps \
+	apk add --no-Cache --virtual .build-deps \
 		bison \
 		coreutils \
 		dpkg-dev dpkg \
