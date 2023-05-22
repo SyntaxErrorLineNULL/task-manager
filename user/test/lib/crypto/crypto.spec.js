@@ -15,6 +15,20 @@ describe('Crypto', () => {
     });
   });
 
+  describe('should generate random bytes', () => {
+    it('should generate a random base64-encoded string of specified length 20', () => {
+      const requestedLength = 20;
+      const firstBase64 = crypto.randomBytesBase64(requestedLength);
+      const generated1 = Buffer.from(firstBase64, 'base64');
+      expect(generated1.length).toEqual(requestedLength);
+
+      const second2Base64 = crypto.randomBytesBase64(requestedLength);
+      const generated2 = Buffer.from(second2Base64, 'base64');
+      expect(generated2.length).toEqual(requestedLength);
+      expect(firstBase64).not.toEqual(second2Base64)
+    });
+  });
+
   describe('decodeBase64StringUtf8', () => {
     it('should decode a base64-encoded string to UTF-8 format', () => {
       const base64 = 'SGVsbG8gd29ybGQ='; // 'Hello world' in base64
